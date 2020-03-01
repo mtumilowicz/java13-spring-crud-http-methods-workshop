@@ -1,11 +1,13 @@
 package app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
 public class ProcessConfigService {
+    @Autowired
     ProcessConfigRepository processConfigRepository;
 
     public ProcessConfig update(Map<String, String> props, String id) {
