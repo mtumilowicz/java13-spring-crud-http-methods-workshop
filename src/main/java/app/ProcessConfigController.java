@@ -15,7 +15,7 @@ public class ProcessConfigController {
     ProcessConfigService processConfigService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProcessConfigEntity> findById(@PathVariable String id) {
+    public ResponseEntity<ProcessConfig> findById(@PathVariable String id) {
         return processConfigService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

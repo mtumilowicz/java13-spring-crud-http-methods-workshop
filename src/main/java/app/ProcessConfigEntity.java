@@ -36,22 +36,4 @@ public class ProcessConfigEntity {
 
         return processConfig;
     }
-
-    public ProcessConfigEntity putAll(Map<String, String> props) {
-        properties.putAll(props);
-
-        return this;
-    }
-
-    public ProcessConfigEntity setProperties(Map<String, String> props) {
-        properties = props;
-
-        return this;
-    }
-
-    public ProcessConfigEntity setId(String id) {
-        this.id = id;
-
-        return this;
-    }
 }

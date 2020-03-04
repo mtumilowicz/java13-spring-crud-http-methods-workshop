@@ -12,8 +12,8 @@ public class ProcessConfigDbRepository implements ProcessConfigRepository {
     ProcessConfigJpaRepository repository;
 
     @Override
-    public Optional<ProcessConfigEntity> findById(String id) {
-        return repository.findById(id);
+    public Optional<ProcessConfig> findById(String id) {
+        return repository.findById(id).map(ProcessConfigEntity::toDomain);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class ProcessConfigDbRepository implements ProcessConfigRepository {
     }
 
     @Override
-    public ProcessConfigEntity save(ProcessConfigEntity pc) {
-        return repository.save(pc);
+    public ProcessConfig save(ProcessConfig pc) {
+        return repository.save(ProcessConfigEntity.from(pc)).toDomain();
     }
 }
