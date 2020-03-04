@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("app")
@@ -29,6 +28,11 @@ public class ProcessConfigController {
 
     @PatchMapping("/{id}")
     public String xxx(@RequestBody Map<String, String> props, @PathVariable String id) {
+        return String.valueOf(processConfigService.patch(props, id));
+    }
+
+    @PutMapping("/{id}")
+    public String xxx2(@RequestBody Map<String, String> props, @PathVariable String id) {
         return String.valueOf(processConfigService.update(props, id));
     }
 

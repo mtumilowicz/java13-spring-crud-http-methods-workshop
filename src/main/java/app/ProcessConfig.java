@@ -25,4 +25,10 @@ public class ProcessConfig {
 
         return this;
     }
+
+    public ProcessConfig setProperties(Map<String, String> props) {
+        properties = props;
+
+        return this;
+    }
 }

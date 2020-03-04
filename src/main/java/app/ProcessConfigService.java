@@ -17,6 +17,14 @@ public class ProcessConfigService {
 
     public ProcessConfig update(Map<String, String> props, String id) {
         processConfigRepository.findById(id)
+                .map(config -> config.setProperties(props))
+                .ifPresent(processConfigRepository::save);
+
+        return processConfigRepository.findById(id).orElse(null);
+    }
+
+    public ProcessConfig patch(Map<String, String> props, String id) {
+        processConfigRepository.findById(id)
                 .map(config -> config.merge(props))
                 .ifPresent(processConfigRepository::save);
 
