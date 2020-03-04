@@ -12,7 +12,7 @@ public class ProcessConfigService {
     @Autowired
     ProcessConfigRepository processConfigRepository;
 
-    public Optional<ProcessConfig> get(String id) {
+    public Optional<ProcessConfig> findById(String id) {
         return processConfigRepository.findById(id);
     }
 
