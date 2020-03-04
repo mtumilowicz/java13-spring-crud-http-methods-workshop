@@ -3,6 +3,7 @@ package app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,12 +16,14 @@ public class ProcessConfigService {
         return processConfigRepository.findById(id);
     }
 
-    public ProcessConfig update(Map<String, String> props, String id) {
-        processConfigRepository.findById(id)
-                .map(config -> config.setProperties(props))
-                .ifPresent(processConfigRepository::save);
+    @Transactional
+    public ProcessConfig put(Map<String, String> props, String id) {
+        var pc = new ProcessConfig();
+        pc.setProperties(props);
+        pc.setId(id);
 
-        return processConfigRepository.findById(id).orElse(null);
+        processConfigRepository.delete(pc);
+        return processConfigRepository.save(pc);
     }
 
     public ProcessConfig patch(Map<String, String> props, String id) {

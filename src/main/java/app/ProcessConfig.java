@@ -31,4 +31,10 @@ public class ProcessConfig {
 
         return this;
     }
+
+    public ProcessConfig setId(String id) {
+        this.id = id;
+
+        return this;
+    }
 }
