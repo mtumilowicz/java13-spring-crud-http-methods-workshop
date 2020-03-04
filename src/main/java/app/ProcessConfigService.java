@@ -12,13 +12,13 @@ public class ProcessConfigService {
     @Autowired
     ProcessConfigRepository processConfigRepository;
 
-    public Optional<ProcessConfig> findById(String id) {
+    public Optional<ProcessConfigEntity> findById(String id) {
         return processConfigRepository.findById(id);
     }
 
     @Transactional
-    public ProcessConfig createOrUpdate(Map<String, String> props, String id) {
-        var pc = new ProcessConfig();
+    public ProcessConfigEntity createOrUpdate(Map<String, String> props, String id) {
+        var pc = new ProcessConfigEntity();
         pc.setProperties(props);
         pc.setId(id);
 
@@ -26,7 +26,7 @@ public class ProcessConfigService {
         return processConfigRepository.save(pc);
     }
 
-    public ProcessConfig partialUpdate(Map<String, String> props, String id) {
+    public ProcessConfigEntity partialUpdate(Map<String, String> props, String id) {
         processConfigRepository.findById(id)
                 .map(config -> config.putAll(props))
                 .ifPresent(processConfigRepository::save);
@@ -34,8 +34,8 @@ public class ProcessConfigService {
         return processConfigRepository.findById(id).orElse(null);
     }
 
-    public ProcessConfig create(Map<String, String> props) {
-        ProcessConfig processConfig = new ProcessConfig();
+    public ProcessConfigEntity create(Map<String, String> props) {
+        ProcessConfigEntity processConfig = new ProcessConfigEntity();
         processConfig.setProperties(props);
         return processConfigRepository.save(processConfig);
     }

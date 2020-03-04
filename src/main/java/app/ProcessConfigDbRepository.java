@@ -12,7 +12,7 @@ public class ProcessConfigDbRepository implements ProcessConfigRepository {
     ProcessConfigJpaRepository repository;
 
     @Override
-    public Optional<ProcessConfig> findById(String id) {
+    public Optional<ProcessConfigEntity> findById(String id) {
         return repository.findById(id);
     }
 
@@ -22,7 +22,7 @@ public class ProcessConfigDbRepository implements ProcessConfigRepository {
     }
 
     @Override
-    public ProcessConfig save(ProcessConfig pc) {
+    public ProcessConfigEntity save(ProcessConfigEntity pc) {
         return repository.save(pc);
     }
 }
