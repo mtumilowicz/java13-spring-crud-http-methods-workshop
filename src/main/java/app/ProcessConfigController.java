@@ -27,12 +27,12 @@ public class ProcessConfigController {
     }
 
     @PatchMapping("/{id}")
-    public String xxx(@RequestBody Map<String, String> props, @PathVariable String id) {
-        return String.valueOf(processConfigService.patch(props, id));
+    public String patch(@RequestBody Map<String, String> props, @PathVariable String id) {
+        return String.valueOf(processConfigService.partialUpdate(props, id));
     }
 
     @PutMapping("/{id}")
-    public String xxx2(@RequestBody Map<String, String> props, @PathVariable String id) {
+    public String put(@RequestBody Map<String, String> props, @PathVariable String id) {
         return String.valueOf(processConfigService.put(props, id));
     }
 

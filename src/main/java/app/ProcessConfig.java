@@ -20,7 +20,7 @@ public class ProcessConfig {
     @Column(name = "value")
     private Map<String, String> properties = new HashMap<>();
 
-    public ProcessConfig merge(Map<String, String> props) {
+    public ProcessConfig putAll(Map<String, String> props) {
         properties.putAll(props);
 
         return this;

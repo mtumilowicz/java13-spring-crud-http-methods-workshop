@@ -26,9 +26,9 @@ public class ProcessConfigService {
         return processConfigRepository.save(pc);
     }
 
-    public ProcessConfig patch(Map<String, String> props, String id) {
+    public ProcessConfig partialUpdate(Map<String, String> props, String id) {
         processConfigRepository.findById(id)
-                .map(config -> config.merge(props))
+                .map(config -> config.putAll(props))
                 .ifPresent(processConfigRepository::save);
 
         return processConfigRepository.findById(id).orElse(null);
