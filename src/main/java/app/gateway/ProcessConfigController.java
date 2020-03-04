@@ -2,6 +2,9 @@ package app.gateway;
 
 import app.domain.ProcessConfig;
 import app.domain.ProcessConfigService;
+import app.gateway.input.ProcessConfigCreationInput;
+import app.gateway.input.ProcessConfigPartialUpdateInput;
+import app.gateway.input.ProcessConfigUpdateInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -24,18 +27,18 @@ public class ProcessConfigController {
     }
 
     @PostMapping
-    public String create(@RequestBody Map<String, String> props) {
-        return processConfigService.create(props).getId();
+    public String create(@RequestBody ProcessConfigCreationInput creationInput) {
+        return processConfigService.create(creationInput.getProps()).getId();
     }
 
     @PatchMapping("/{id}")
-    public String patch(@RequestBody Map<String, String> props, @PathVariable String id) {
-        return String.valueOf(processConfigService.partialUpdate(props, id));
+    public String patch(@RequestBody ProcessConfigPartialUpdateInput partialUpdateInput, @PathVariable String id) {
+        return String.valueOf(processConfigService.partialUpdate(partialUpdateInput.getProps(), id));
     }
 
     @PutMapping("/{id}")
-    public String put(@RequestBody Map<String, String> props, @PathVariable String id) {
-        return String.valueOf(processConfigService.createOrUpdate(props, id));
+    public String put(@RequestBody ProcessConfigUpdateInput updateInput, @PathVariable String id) {
+        return String.valueOf(processConfigService.createOrUpdate(updateInput.getProps(), id));
     }
 
     @RequestMapping(method = RequestMethod.OPTIONS)
