@@ -22,8 +22,8 @@ public class ProcessConfigController {
     }
 
     @PostMapping
-    public String yyy(@RequestBody Map<String, String> props) {
-        return processConfigService.save(props).getId();
+    public String create(@RequestBody Map<String, String> props) {
+        return processConfigService.create(props).getId();
     }
 
     @PatchMapping("/{id}")

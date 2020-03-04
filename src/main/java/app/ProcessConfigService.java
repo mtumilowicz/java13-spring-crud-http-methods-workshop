@@ -34,7 +34,7 @@ public class ProcessConfigService {
         return processConfigRepository.findById(id).orElse(null);
     }
 
-    public ProcessConfig save(Map<String, String> props) {
+    public ProcessConfig create(Map<String, String> props) {
         ProcessConfig processConfig = new ProcessConfig();
         processConfig.setProperties(props);
         return processConfigRepository.save(processConfig);
