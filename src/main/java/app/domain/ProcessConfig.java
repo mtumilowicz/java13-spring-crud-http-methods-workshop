@@ -1,7 +1,6 @@
-package app;
+package app.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Map;
 

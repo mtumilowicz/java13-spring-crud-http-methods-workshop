@@ -1,5 +1,7 @@
 package app;
 
+import app.domain.ProcessConfig;
+import app.domain.ProcessConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

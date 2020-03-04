@@ -1,7 +1,7 @@
 package app;
 
+import app.domain.ProcessConfig;
 import lombok.Data;
-import org.apache.tomcat.jni.Proc;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -23,16 +23,16 @@ public class ProcessConfigEntity {
 
     public static ProcessConfigEntity from(ProcessConfig processConfig) {
         ProcessConfigEntity processConfigEntity = new ProcessConfigEntity();
-        processConfigEntity.id = processConfig.id;
-        processConfigEntity.properties = processConfig.properties;
+        processConfigEntity.id = processConfig.getId();
+        processConfigEntity.properties = processConfig.getProperties();
 
         return processConfigEntity;
     }
 
     public ProcessConfig toDomain() {
         ProcessConfig processConfig = new ProcessConfig();
-        processConfig.id = id;
-        processConfig.properties = properties;
+        processConfig.setId(id);
+        processConfig.setProperties(properties);
 
         return processConfig;
     }

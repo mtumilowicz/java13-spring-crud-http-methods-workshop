@@ -1,4 +1,4 @@
-package app;
+package app.domain;
 
 import java.util.Optional;
 

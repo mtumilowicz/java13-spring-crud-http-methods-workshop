@@ -1,5 +1,7 @@
 package app;
 
+import app.domain.ProcessConfig;
+import app.domain.ProcessConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
