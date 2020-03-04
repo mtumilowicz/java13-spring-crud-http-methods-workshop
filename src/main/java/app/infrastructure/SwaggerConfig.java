@@ -1,4 +1,4 @@
-package app;
+package app.infrastructure;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

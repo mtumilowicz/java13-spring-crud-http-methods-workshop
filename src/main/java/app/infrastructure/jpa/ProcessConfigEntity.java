@@ -1,4 +1,4 @@
-package app;
+package app.infrastructure.jpa;
 
 import app.domain.ProcessConfig;
 import lombok.Data;

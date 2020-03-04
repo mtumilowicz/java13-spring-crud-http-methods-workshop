@@ -1,4 +1,4 @@
-package app;
+package app.gateway;
 
 import app.domain.ProcessConfig;
 import app.domain.ProcessConfigService;
