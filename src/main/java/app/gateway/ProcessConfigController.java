@@ -27,17 +27,17 @@ public class ProcessConfigController {
 
     @PostMapping
     public ResponseEntity<ProcessConfigOutput> create(@RequestBody ProcessConfigCreationInput creationInput) {
-        return ResponseEntity.ok(ProcessConfigOutput.from(processConfigService.create(creationInput.getProps())));
+        return ResponseEntityBuilder.ok(processConfigService.create(creationInput.getProps()), ProcessConfigOutput::from);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProcessConfigOutput> patch(@RequestBody ProcessConfigPartialUpdateInput partialUpdateInput, @PathVariable String id) {
-        return ResponseEntity.ok(ProcessConfigOutput.from(processConfigService.partialUpdate(partialUpdateInput.getProps(), id)));
+        return ResponseEntityBuilder.ok(processConfigService.partialUpdate(partialUpdateInput.getProps(), id), ProcessConfigOutput::from);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProcessConfigOutput> put(@RequestBody ProcessConfigUpdateInput updateInput, @PathVariable String id) {
-        return ResponseEntity.ok(ProcessConfigOutput.from(processConfigService.createOrUpdate(updateInput.getProps(), id)));
+        return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.getProps(), id), ProcessConfigOutput::from);
     }
 
     @RequestMapping(method = RequestMethod.OPTIONS)
