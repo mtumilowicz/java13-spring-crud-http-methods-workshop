@@ -4,11 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ProcessConfigService {
     @Autowired
     ProcessConfigRepository processConfigRepository;
+
+    public Optional<ProcessConfig> get(String id) {
+        return processConfigRepository.findById(id);
+    }
 
     public ProcessConfig update(Map<String, String> props, String id) {
         processConfigRepository.findById(id)

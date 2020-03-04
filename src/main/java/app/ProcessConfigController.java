@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("app")
@@ -14,9 +15,11 @@ public class ProcessConfigController {
     @Autowired
     ProcessConfigService processConfigService;
 
-    @GetMapping
-    public String hehe() {
-        return "hehe";
+    @GetMapping("/{id}")
+    public ResponseEntity<ProcessConfig> hehe(@PathVariable String id) {
+        return processConfigService.get(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
