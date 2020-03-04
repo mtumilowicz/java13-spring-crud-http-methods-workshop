@@ -22,7 +22,7 @@ public class ProcessConfigService {
         pc.setProperties(props);
         pc.setId(id);
 
-        processConfigRepository.delete(pc);
+        processConfigRepository.deleteById(pc.getId());
         return processConfigRepository.save(pc);
     }
 
