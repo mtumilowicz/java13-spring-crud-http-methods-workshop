@@ -33,7 +33,7 @@ public class ProcessConfigController {
 
     @PutMapping("/{id}")
     public String put(@RequestBody Map<String, String> props, @PathVariable String id) {
-        return String.valueOf(processConfigService.put(props, id));
+        return String.valueOf(processConfigService.createOrUpdate(props, id));
     }
 
     @RequestMapping(method = RequestMethod.OPTIONS)

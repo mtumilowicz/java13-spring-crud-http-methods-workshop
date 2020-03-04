@@ -17,7 +17,7 @@ public class ProcessConfigService {
     }
 
     @Transactional
-    public ProcessConfig put(Map<String, String> props, String id) {
+    public ProcessConfig createOrUpdate(Map<String, String> props, String id) {
         var pc = new ProcessConfig();
         pc.setProperties(props);
         pc.setId(id);
