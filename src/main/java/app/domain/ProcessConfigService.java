@@ -17,15 +17,18 @@ public class ProcessConfigService {
 
     @Transactional
     public ProcessConfig createOrUpdate(Map<String, String> props, String id) {
-        var pc = ProcessConfig.builder()
-                .id(id)
-                .properties(props)
-                .build();
+        ProcessConfig processConfig = findById(id)
+                .map(config -> config.withProperties(props))
+                .orElse(ProcessConfig.builder()
+                        .id(id)
+                        .properties(props)
+                        .build()
+                );
+        return save(processConfig);
+    }
 
-        if (existsById(id)) {
-            deleteById(id);
-        }
-        return processConfigRepository.save(pc);
+    private ProcessConfig save(ProcessConfig processConfig) {
+        return processConfigRepository.save(processConfig);
     }
 
     public ProcessConfig partialUpdate(Map<String, String> props, String id) {
@@ -40,7 +43,7 @@ public class ProcessConfigService {
         ProcessConfig processConfig = ProcessConfig.builder()
                 .properties(props)
                 .build();
-        return processConfigRepository.save(processConfig);
+        return save(processConfig);
     }
 
     public void deleteById(String id) {
