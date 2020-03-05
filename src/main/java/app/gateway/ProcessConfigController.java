@@ -52,7 +52,12 @@ public class ProcessConfigController {
     ResponseEntity<?> options() {
         return ResponseEntity
                 .ok()
-                .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS, HttpMethod.PATCH)
+                .allow(HttpMethod.GET,
+                        HttpMethod.POST,
+                        HttpMethod.PATCH,
+                        HttpMethod.PUT,
+                        HttpMethod.DELETE,
+                        HttpMethod.OPTIONS)
                 .build();
     }
 }
