@@ -23,7 +23,9 @@ public class ProcessConfigEntity {
 
     public static ProcessConfigEntity from(ProcessConfig processConfig) {
         ProcessConfigEntity processConfigEntity = new ProcessConfigEntity();
-        processConfigEntity.id = processConfig.getId();
+        if (processConfig.getId() != null) {
+            processConfigEntity.id = processConfig.getId();
+        }
         processConfigEntity.properties = processConfig.getProperties();
 
         return processConfigEntity;
