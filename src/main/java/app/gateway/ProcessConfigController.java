@@ -29,7 +29,7 @@ public class ProcessConfigController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> patch(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.ok(processConfigService.partialUpdate(partialUpdateInput.toDomain(), id), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.found(processConfigService.partialUpdate(partialUpdateInput.toDomain(), id), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")

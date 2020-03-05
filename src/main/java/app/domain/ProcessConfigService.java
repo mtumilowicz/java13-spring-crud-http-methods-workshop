@@ -30,12 +30,10 @@ public class ProcessConfigService {
         return processConfigRepository.save(processConfig);
     }
 
-    public ProcessConfig partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput, String id) {
-        processConfigRepository.findById(id)
+    public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput, String id) {
+        return processConfigRepository.findById(id)
                 .map(config -> config.putAll(partialUpdateInput.props))
-                .ifPresent(processConfigRepository::save);
-
-        return processConfigRepository.findById(id).orElse(null);
+                .map(processConfigRepository::save);
     }
 
     public ProcessConfig create(ProcessConfigCreationInput creationInput) {

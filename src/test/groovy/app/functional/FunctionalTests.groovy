@@ -61,9 +61,21 @@ class FunctionalTests extends Specification {
                 .andExpect(status().isOk())
     }
 
-    def 'patch'() {
-        given:
-        def xxx = mockMvc.perform(
+    def 'if resource that you want to patch cannot be found - 404'() {
+        expect:
+        mockMvc.perform(
+                patch("/app/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(RequestMapper.asJsonString([
+                                props: [a: 'b']
+                        ]))
+        )
+                .andExpect(status().isNotFound())
+    }
+
+    def 'if resource that you want to patch exists - patch it'() {
+        given: 'prepare process config to be further deleted'
+        def responseOfCreate = mockMvc.perform(
                 post('/app')
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString([
@@ -72,18 +84,32 @@ class FunctionalTests extends Specification {
         )
                 .andExpect(status().isOk())
                 .andReturn()
+        ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
 
-        ProcessConfigApiOutput yyy = ResponseMapper.parseResponse(xxx, ProcessConfigApiOutput)
-
-        expect:
-        mockMvc.perform(
-                patch("/app/$yyy.id")
+        and: 'verify that it was successfully added'
+        mockMvc.perform(get("/app/$createdProcessConfig.id"))
+                .andExpect(status().isOk())
+        when:
+        def responseOfPatch = mockMvc.perform(
+                patch("/app/$createdProcessConfig.id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString([
                                 props: [a: 'b']
                         ]))
         )
                 .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput patchedProcessConfig = ResponseMapper.parseResponse(responseOfPatch, ProcessConfigApiOutput)
+
+        then: 'verify message of patch'
+        patchedProcessConfig.properties == [a: 'b']
+
+        and: 'verify that it was successfully patched'
+        def responseOfGetAfterPatch = mockMvc.perform(get("/app/$createdProcessConfig.id"))
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput afterPatchProcessConfig = ResponseMapper.parseResponse(responseOfGetAfterPatch, ProcessConfigApiOutput)
+        afterPatchProcessConfig.properties == [a: 'b']
     }
 
     def 'if resource that you want to delete cannot be found - 404'() {
