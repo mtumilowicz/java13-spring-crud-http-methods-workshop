@@ -24,17 +24,17 @@ public class ProcessConfigController {
 
     @PostMapping
     public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput) {
-        return ResponseEntityBuilder.ok(processConfigService.create(creationInput.getProps()), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.ok(processConfigService.create(creationInput.toDomain()), ProcessConfigApiOutput::from);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> patch(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.ok(processConfigService.partialUpdate(partialUpdateInput.getProps(), id), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.ok(processConfigService.partialUpdate(partialUpdateInput.toDomain(), id), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> put(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.getProps(), id), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.toDomain(), id), ProcessConfigApiOutput::from);
     }
 
     @DeleteMapping("/{id}")
@@ -49,7 +49,7 @@ public class ProcessConfigController {
 
 
     @RequestMapping(method = RequestMethod.OPTIONS)
-    ResponseEntity<?> collectionOptions() {
+    ResponseEntity<?> options() {
         return ResponseEntity
                 .ok()
                 .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS, HttpMethod.PATCH)

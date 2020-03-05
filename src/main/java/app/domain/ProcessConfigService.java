@@ -3,7 +3,6 @@ package app.domain;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -16,12 +15,12 @@ public class ProcessConfigService {
     }
 
     @Transactional
-    public ProcessConfig createOrUpdate(Map<String, String> props, String id) {
+    public ProcessConfig createOrUpdate(ProcessConfigUpdateInput configUpdateInput, String id) {
         ProcessConfig processConfig = findById(id)
-                .map(config -> config.withProperties(props))
+                .map(config -> config.withProperties(configUpdateInput.props))
                 .orElse(ProcessConfig.builder()
                         .id(id)
-                        .properties(props)
+                        .properties(configUpdateInput.props)
                         .build()
                 );
         return save(processConfig);
@@ -31,17 +30,17 @@ public class ProcessConfigService {
         return processConfigRepository.save(processConfig);
     }
 
-    public ProcessConfig partialUpdate(Map<String, String> props, String id) {
+    public ProcessConfig partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput, String id) {
         processConfigRepository.findById(id)
-                .map(config -> config.putAll(props))
+                .map(config -> config.putAll(partialUpdateInput.props))
                 .ifPresent(processConfigRepository::save);
 
         return processConfigRepository.findById(id).orElse(null);
     }
 
-    public ProcessConfig create(Map<String, String> props) {
+    public ProcessConfig create(ProcessConfigCreationInput creationInput) {
         ProcessConfig processConfig = ProcessConfig.builder()
-                .properties(props)
+                .properties(creationInput.props)
                 .build();
         return save(processConfig);
     }
