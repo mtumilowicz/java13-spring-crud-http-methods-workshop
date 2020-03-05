@@ -106,4 +106,11 @@ class FunctionalTests extends Specification {
                 delete("/app/$yyy.id"))
                 .andExpect(status().isOk())
     }
+
+    def 'options'() {
+        expect:
+        mockMvc.perform(
+                options('/app'))
+                .andExpect(status().isOk())
+    }
 }
