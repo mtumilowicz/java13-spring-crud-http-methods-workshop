@@ -18,10 +18,34 @@ class FunctionalTests extends Specification {
     @Autowired
     MockMvc mockMvc
 
-    def 'get'() {
+    def 'if resource that you want to get not exists - 404'() {
         expect:
         mockMvc.perform(get('/app/1'))
                 .andExpect(status().isNotFound())
+    }
+
+    def 'if resource that you want to get exists - get it'() {
+        given: 'prepare resource to be further get'
+        def responseOfCreate = mockMvc.perform(
+                post('/app')
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(RequestMapper.asJsonString([
+                                props: [a: 'a']
+                        ]))
+        )
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
+
+        when:
+        def responseOfGet = mockMvc.perform(get("/app/$createdProcessConfig.id"))
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput getProcessConfig = ResponseMapper.parseResponse(responseOfGet, ProcessConfigApiOutput)
+
+        then:
+        getProcessConfig.id == createdProcessConfig.id
+        getProcessConfig.properties == createdProcessConfig.properties
     }
 
     def 'post'() {
