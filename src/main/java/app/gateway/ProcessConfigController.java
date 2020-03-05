@@ -38,6 +38,17 @@ public class ProcessConfigController {
         return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.getProps(), id), ProcessConfigOutput::from);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id) {
+        if (processConfigService.existsById(id)) {
+            processConfigService.deleteById(id);
+            return ResponseEntity.ok(id);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
     @RequestMapping(method = RequestMethod.OPTIONS)
     ResponseEntity<?> collectionOptions() {
         return ResponseEntity

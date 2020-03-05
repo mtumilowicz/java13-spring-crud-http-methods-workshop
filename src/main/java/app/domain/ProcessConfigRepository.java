@@ -8,4 +8,6 @@ public interface ProcessConfigRepository {
     void deleteById(String id);
 
     ProcessConfig save(ProcessConfig pc);
+
+    boolean existsById(String id);
 }

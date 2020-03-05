@@ -1,8 +1,6 @@
 package app.domain;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Map;
@@ -23,7 +21,7 @@ public class ProcessConfigService {
         pc.setProperties(props);
         pc.setId(id);
 
-        processConfigRepository.deleteById(pc.getId());
+        processConfigRepository.deleteById(id);
         return processConfigRepository.save(pc);
     }
 
@@ -39,5 +37,13 @@ public class ProcessConfigService {
         ProcessConfig processConfig = new ProcessConfig();
         processConfig.setProperties(props);
         return processConfigRepository.save(processConfig);
+    }
+
+    public void deleteById(String id) {
+        processConfigRepository.deleteById(id);
+    }
+
+    public boolean existsById(String id) {
+        return processConfigRepository.existsById(id);
     }
 }
