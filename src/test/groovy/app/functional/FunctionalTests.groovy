@@ -6,7 +6,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
@@ -24,7 +23,10 @@ class FunctionalTests extends Specification {
 
     def 'if resource that you want to get exists - get it'() {
         given: 'prepare resource to be further get'
-        def responseOfCreate = mockMvcFacade.post('/app', [props: [a: 'a']])
+        def responseOfCreate = mockMvcFacade.post([
+                url : '/app',
+                body: [props: [a: 'a']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
@@ -42,7 +44,10 @@ class FunctionalTests extends Specification {
 
     def 'create resource'() {
         when: 'prepare resource to be further get'
-        def responseOfCreate = mockMvcFacade.post('/app', [props: [a: 'a']])
+        def responseOfCreate = mockMvcFacade.post([
+                url : '/app',
+                body: [props: [a: 'a']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
@@ -67,7 +72,10 @@ class FunctionalTests extends Specification {
         def id = UUID.randomUUID().toString()
 
         when: 'resource is put'
-        def responseOfPut = mockMvcFacade.put('/app/' + id, [props: [a: 'b']])
+        def responseOfPut = mockMvcFacade.put([
+                url : '/app/' + id,
+                body: [props: [a: 'b']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput putProcessConfig = ResponseMapper.parseResponse(responseOfPut, ProcessConfigApiOutput)
@@ -83,13 +91,19 @@ class FunctionalTests extends Specification {
 
     def 'if resource that you want to put exists - replace it'() {
         given: 'prepare resource that would be replaced'
-        def postResponse = mockMvcFacade.post('/app', [props: [a: 'a']])
+        def postResponse = mockMvcFacade.post([
+                url : '/app',
+                body: [props: [a: 'a']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput postProcessConfig = ResponseMapper.parseResponse(postResponse, ProcessConfigApiOutput)
 
         when: 'put resource'
-        def responseOfPut = mockMvcFacade.put("/app/$postProcessConfig.id", [props: [a: 'b']])
+        def responseOfPut = mockMvcFacade.put([
+                url : "/app/$postProcessConfig.id",
+                body: [props: [a: 'b']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput putProcessConfig = ResponseMapper.parseResponse(responseOfPut, ProcessConfigApiOutput)
@@ -111,13 +125,19 @@ class FunctionalTests extends Specification {
 
     def 'if resource that you want to patch cannot be found - 404'() {
         expect:
-        mockMvcFacade.patch('/app/1', [props: [a: 'b']])
+        mockMvcFacade.patch([
+                url : '/app/1',
+                body: [props: [a: 'b']]
+        ])
                 .andExpect(status().isNotFound())
     }
 
     def 'if resource that you want to patch exists - patch it'() {
         given: 'prepare process config to be further deleted'
-        def responseOfCreate = mockMvcFacade.post('/app', [props: [a: 'a']])
+        def responseOfCreate = mockMvcFacade.post([
+                url : '/app',
+                body: [props: [a: 'a']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
@@ -126,7 +146,10 @@ class FunctionalTests extends Specification {
         mockMvcFacade.get("/app/$createdProcessConfig.id")
                 .andExpect(status().isOk())
         when:
-        def responseOfPatch = mockMvcFacade.patch("/app/$createdProcessConfig.id", [props: [a: 'b']])
+        def responseOfPatch = mockMvcFacade.patch([
+                url : "/app/$createdProcessConfig.id",
+                body: [props: [a: 'b']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput patchedProcessConfig = ResponseMapper.parseResponse(responseOfPatch, ProcessConfigApiOutput)
@@ -150,7 +173,10 @@ class FunctionalTests extends Specification {
 
     def 'if resource that you want to delete exists - delete it'() {
         given: 'prepare process config to be further deleted'
-        def responseOfCreate = mockMvcFacade.post('/app', [props: [a: 'a']])
+        def responseOfCreate = mockMvcFacade.post([
+                url : '/app',
+                body: [props: [a: 'a']]
+        ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)

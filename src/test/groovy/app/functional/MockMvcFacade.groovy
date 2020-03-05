@@ -14,29 +14,29 @@ class MockMvcFacade {
     @Autowired
     MockMvc mockMvc
 
-    def post(url, body) {
+    def post(Map request) {
         mockMvc.perform(
-                post(url)
+                MockMvcRequestBuilders.post(request.url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(RequestMapper.asJsonString(body)
+                        .content(RequestMapper.asJsonString(request.body)
                         )
         )
     }
 
-    def put(url, body) {
+    def put(Map request) {
         mockMvc.perform(
-                put(url)
+                MockMvcRequestBuilders.put(request.url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(RequestMapper.asJsonString(body)
+                        .content(RequestMapper.asJsonString(request.body)
                         )
         )
     }
 
-    def patch(url, body) {
+    def patch(Map request) {
         mockMvc.perform(
-                patch(url)
+                MockMvcRequestBuilders.patch(request.url)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(RequestMapper.asJsonString(body)
+                        .content(RequestMapper.asJsonString(request.body)
                         )
         )
     }
