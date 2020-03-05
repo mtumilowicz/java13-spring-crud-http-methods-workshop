@@ -1,5 +1,6 @@
 package app.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,10 +8,10 @@ import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 
-@Service
+@RequiredArgsConstructor
 public class ProcessConfigService {
-    @Autowired
-    ProcessConfigRepository processConfigRepository;
+
+    private final ProcessConfigRepository processConfigRepository;
 
     public Optional<ProcessConfig> findById(String id) {
         return processConfigRepository.findById(id);
