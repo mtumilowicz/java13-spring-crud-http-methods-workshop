@@ -1,11 +1,10 @@
 package app.gateway;
 
-import app.domain.ProcessConfig;
 import app.domain.ProcessConfigService;
-import app.gateway.input.ProcessConfigCreationInput;
-import app.gateway.input.ProcessConfigPartialUpdateInput;
-import app.gateway.input.ProcessConfigUpdateInput;
-import app.gateway.output.ProcessConfigOutput;
+import app.gateway.input.ProcessConfigCreationApiInput;
+import app.gateway.input.ProcessConfigPartialUpdateApiInput;
+import app.gateway.input.ProcessConfigUpdateApiInput;
+import app.gateway.output.ProcessConfigApiOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,23 +18,23 @@ public class ProcessConfigController {
     ProcessConfigService processConfigService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProcessConfigOutput> findById(@PathVariable String id) {
-        return ResponseEntityBuilder.found(processConfigService.findById(id), ProcessConfigOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> findById(@PathVariable String id) {
+        return ResponseEntityBuilder.found(processConfigService.findById(id), ProcessConfigApiOutput::from);
     }
 
     @PostMapping
-    public ResponseEntity<ProcessConfigOutput> create(@RequestBody ProcessConfigCreationInput creationInput) {
-        return ResponseEntityBuilder.ok(processConfigService.create(creationInput.getProps()), ProcessConfigOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput) {
+        return ResponseEntityBuilder.ok(processConfigService.create(creationInput.getProps()), ProcessConfigApiOutput::from);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProcessConfigOutput> patch(@RequestBody ProcessConfigPartialUpdateInput partialUpdateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.ok(processConfigService.partialUpdate(partialUpdateInput.getProps(), id), ProcessConfigOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> patch(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
+        return ResponseEntityBuilder.ok(processConfigService.partialUpdate(partialUpdateInput.getProps(), id), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcessConfigOutput> put(@RequestBody ProcessConfigUpdateInput updateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.getProps(), id), ProcessConfigOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> put(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
+        return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.getProps(), id), ProcessConfigApiOutput::from);
     }
 
     @DeleteMapping("/{id}")

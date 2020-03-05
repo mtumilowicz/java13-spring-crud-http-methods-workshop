@@ -6,12 +6,12 @@ import lombok.Builder;
 import java.util.Map;
 
 @Builder
-public class ProcessConfigOutput {
+public class ProcessConfigApiOutput {
     String id;
     Map<String, String> properties;
 
-    public static ProcessConfigOutput from(ProcessConfig processConfig) {
-        return ProcessConfigOutput.builder()
+    public static ProcessConfigApiOutput from(ProcessConfig processConfig) {
+        return ProcessConfigApiOutput.builder()
                 .id(processConfig.getId())
                 .properties(processConfig.getProperties())
                 .build();

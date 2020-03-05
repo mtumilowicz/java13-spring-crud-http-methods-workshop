@@ -5,6 +5,6 @@ import lombok.Getter;
 import java.util.Map;
 
 @Getter
-public class ProcessConfigPartialUpdateInput {
+public class ProcessConfigCreationApiInput {
     Map<String, String> props;
 }
