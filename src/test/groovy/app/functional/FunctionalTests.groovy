@@ -76,9 +76,34 @@ class FunctionalTests extends Specification {
         getProcessConfig.properties == createdProcessConfig.properties
     }
 
-    def 'put'() {
+    def 'if resource that you want to put not exists - put it'() {
         given:
-        def xxx = mockMvc.perform(
+        def id = UUID.randomUUID().toString()
+
+        when: 'resource is put'
+        def responseOfPut = mockMvc.perform(
+                put('/app/' + id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(RequestMapper.asJsonString([
+                                props: [a: 'b']
+                        ]))
+        )
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput putProcessConfig = ResponseMapper.parseResponse(responseOfPut, ProcessConfigApiOutput)
+
+        then: 'verify response'
+        putProcessConfig.id == id
+        putProcessConfig.properties == [a: 'b']
+
+        and: 'check if resource was added'
+        mockMvc.perform(get("/app/$id"))
+                .andExpect(status().isOk())
+    }
+
+    def 'if resource that you want to put exists - replace it'() {
+        given: 'prepare resource that would be replaced'
+        def postResponse = mockMvc.perform(
                 post('/app')
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString([
@@ -87,18 +112,33 @@ class FunctionalTests extends Specification {
         )
                 .andExpect(status().isOk())
                 .andReturn()
+        ProcessConfigApiOutput postProcessConfig = ResponseMapper.parseResponse(postResponse, ProcessConfigApiOutput)
 
-        ProcessConfigApiOutput yyy = ResponseMapper.parseResponse(xxx, ProcessConfigApiOutput)
-
-        expect:
-        mockMvc.perform(
-                put("/app/$yyy.id")
+        when: 'put resource'
+        def responseOfPut = mockMvc.perform(
+                put("/app/$postProcessConfig.id")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString([
                                 props: [a: 'b']
                         ]))
         )
                 .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput putProcessConfig = ResponseMapper.parseResponse(responseOfPut, ProcessConfigApiOutput)
+
+        then: 'verify response'
+        putProcessConfig.id == postProcessConfig.id
+        putProcessConfig.properties == [a: 'b']
+
+        and: 'resource was replaced'
+        def responseOfGet = mockMvc.perform(get("/app/$postProcessConfig.id"))
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput getProcessConfig = ResponseMapper.parseResponse(responseOfGet, ProcessConfigApiOutput)
+
+        then:
+        getProcessConfig.id == postProcessConfig.id
+        getProcessConfig.properties == [a: 'b']
     }
 
     def 'if resource that you want to patch cannot be found - 404'() {
