@@ -1,7 +1,6 @@
 package app.functional
 
 import app.gateway.output.ProcessConfigApiOutput
-import org.apache.coyote.Response
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -10,7 +9,7 @@ import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,12 +33,12 @@ class FunctionalTests extends Specification {
                                 props: [a: 'a']
                         ]))
         )
-        .andExpect(status().isOk())
+                .andExpect(status().isOk())
     }
 
     def 'put'() {
         given:
-       def xxx = mockMvc.perform(
+        def xxx = mockMvc.perform(
                 post('/app')
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString([
@@ -47,7 +46,7 @@ class FunctionalTests extends Specification {
                         ]))
         )
                 .andExpect(status().isOk())
-        .andReturn()
+                .andReturn()
 
         ProcessConfigApiOutput yyy = ResponseMapper.parseResponse(xxx, ProcessConfigApiOutput)
 
@@ -107,10 +106,19 @@ class FunctionalTests extends Specification {
                 .andExpect(status().isOk())
     }
 
-    def 'options'() {
-        expect:
-        mockMvc.perform(
+    def 'http options check'() {
+        given: 'http methods that should be supported'
+        def methods = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS']
+
+        when: 'get options'
+        def mockMvcResponse = mockMvc.perform(
                 options('/app'))
                 .andExpect(status().isOk())
+                .andReturn()
+        and: 'parse allow header'
+        def allowedMethods = mockMvcResponse.getResponse().getHeader('allow')
+
+        then: 'all methods should be supported'
+        methods.every { allowedMethods.contains it }
     }
 }
