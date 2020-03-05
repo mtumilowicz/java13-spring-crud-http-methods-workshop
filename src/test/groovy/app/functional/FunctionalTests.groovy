@@ -61,4 +61,29 @@ class FunctionalTests extends Specification {
         )
                 .andExpect(status().isOk())
     }
+
+    def 'patch'() {
+        given:
+        def xxx = mockMvc.perform(
+                post('/app')
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(RequestMapper.asJsonString([
+                                props: [a: 'a']
+                        ]))
+        )
+                .andExpect(status().isOk())
+                .andReturn()
+
+        ProcessConfigApiOutput yyy = ResponseMapper.parseResponse(xxx, ProcessConfigApiOutput)
+
+        expect:
+        mockMvc.perform(
+                patch("/app/$yyy.id")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(RequestMapper.asJsonString([
+                                props: [a: 'b']
+                        ]))
+        )
+                .andExpect(status().isOk())
+    }
 }
