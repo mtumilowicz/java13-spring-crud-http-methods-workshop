@@ -48,9 +48,9 @@ class FunctionalTests extends Specification {
         getProcessConfig.properties == createdProcessConfig.properties
     }
 
-    def 'post'() {
-        expect:
-        mockMvc.perform(
+    def 'create resource'() {
+        when: 'prepare resource to be further get'
+        def responseOfCreate = mockMvc.perform(
                 post('/app')
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString([
@@ -58,6 +58,22 @@ class FunctionalTests extends Specification {
                         ]))
         )
                 .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
+
+        then: 'verify response'
+        createdProcessConfig.id
+        createdProcessConfig.properties == [a: 'a']
+
+        and: 'resource was added'
+        def responseOfGet = mockMvc.perform(get("/app/$createdProcessConfig.id"))
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput getProcessConfig = ResponseMapper.parseResponse(responseOfGet, ProcessConfigApiOutput)
+
+        then:
+        getProcessConfig.id == createdProcessConfig.id
+        getProcessConfig.properties == createdProcessConfig.properties
     }
 
     def 'put'() {
