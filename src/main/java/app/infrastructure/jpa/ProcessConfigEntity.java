@@ -30,10 +30,9 @@ public class ProcessConfigEntity {
     }
 
     public ProcessConfig toDomain() {
-        ProcessConfig processConfig = new ProcessConfig();
-        processConfig.setId(id);
-        processConfig.setProperties(properties);
-
-        return processConfig;
+        return ProcessConfig.builder()
+                .id(id)
+                .properties(properties)
+                .build();
     }
 }
