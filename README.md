@@ -1,8 +1,11 @@
-* https://github.com/mtumilowicz/spring-boot-h2-console
-* http://localhost:8080/h2-console
-
 ## preface
 * goals of this workshop:
+    * introduction to all http methods
+    * introduction to spring boot h2 console
+        * https://github.com/mtumilowicz/spring-boot-h2-console
+        * http://localhost:8080/h2-console
+    * introduction to swagger
+        * https://github.com/mtumilowicz/swagger-gradle-config
 * workshop: workshop package, answers: answers package
 
 ## http methods
