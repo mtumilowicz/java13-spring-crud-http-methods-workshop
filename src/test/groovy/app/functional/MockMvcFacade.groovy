@@ -1,12 +1,12 @@
 package app.functional
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 
 @Component
 class MockMvcFacade {
@@ -15,41 +15,46 @@ class MockMvcFacade {
     MockMvc mockMvc
 
     def post(Map request) {
-        mockMvc.perform(
-                MockMvcRequestBuilders.post(request.url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(RequestMapper.asJsonString(request.body)
-                        )
-        )
+        fireWithBody(MockMvcRequestBuilders.post(request.url), request)
     }
 
     def put(Map request) {
-        mockMvc.perform(
-                MockMvcRequestBuilders.put(request.url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(RequestMapper.asJsonString(request.body)
-                        )
-        )
+        fireWithBody(MockMvcRequestBuilders.put(request.url), request)
     }
 
     def patch(Map request) {
+        fireWithBody(MockMvcRequestBuilders.patch(request.url), request)
+    }
+
+    def get(Map request) {
+        fireWithoutBody(MockMvcRequestBuilders.get(request.url), request)
+    }
+
+    def delete(Map request) {
+        fireWithoutBody(MockMvcRequestBuilders.delete(request.url), request)
+    }
+
+    def options(Map request) {
+        fireWithoutBody(MockMvcRequestBuilders.options(request.url), request)
+    }
+
+    private def fireWithoutBody(MockHttpServletRequestBuilder httpMethod, Map request) {
+        mockMvc.perform(httpMethod.headers(prepareHeaders(request.headers)))
+    }
+
+    private def fireWithBody(MockHttpServletRequestBuilder httpMethod, Map request) {
         mockMvc.perform(
-                MockMvcRequestBuilders.patch(request.url)
+                httpMethod
+                        .headers(prepareHeaders(request.headers))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString(request.body)
                         )
         )
     }
 
-    def get(url) {
-        mockMvc.perform(MockMvcRequestBuilders.get(url))
-    }
-
-    def delete(url) {
-        mockMvc.perform(MockMvcRequestBuilders.delete(url))
-    }
-
-    def options(url) {
-        mockMvc.perform(MockMvcRequestBuilders.options(url))
+    private def prepareHeaders(Map<String, String> inputHeaders) {
+        HttpHeaders headers = new HttpHeaders()
+        !inputHeaders.each { headers.add(it.headerName, it.headerValue) }
+        headers
     }
 }
