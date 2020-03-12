@@ -1,6 +1,12 @@
+* references:
+    * http://restcookbook.com/HTTP%20Methods/idempotency/
+    * https://developer.mozilla.org/en-US/docs/Glossary/safe
+
 ## preface
 * goals of this workshop:
     * introduction to all http methods
+    * introduction to characteristics of http methods
+    * introduction to mapping a map in hibernate
     * introduction to spring boot h2 console
         * https://github.com/mtumilowicz/spring-boot-h2-console
         * http://localhost:8080/h2-console
@@ -13,7 +19,13 @@
 * https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
 
 ### http methods characteristics
-* safe
+* safe methods
+    * safe methods are HTTP methods that do not modify resources representation
+    * if it leads to a read-only operation
+    * servers can alter their state: e.g. they can log or keep statistics
+    * safe methods are methods that can be cached, prefetched without any repercussions to the resource
+    * it is not possible to ensure that the server does not generate side-effects as a result of 
+    performing a GET request
 * idempotent
 * nullimpotent
 * cacheable
