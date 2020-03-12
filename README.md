@@ -1,6 +1,8 @@
 * references:
     * http://restcookbook.com/HTTP%20Methods/idempotency/
     * https://developer.mozilla.org/en-US/docs/Glossary/safe
+    * https://harikt.com/blog/2013/11/01/rest-is-delete-idempotent/
+    * https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications
 
 ## preface
 * goals of this workshop:
@@ -27,7 +29,17 @@
     * it is not possible to ensure that the server does not generate side-effects as a result of 
     performing a GET request
 * idempotent
+    * the side-effects of N > 0 identical requests is the same as for a single request (aside from error or 
+    expiration issues)
+    * refers to the state of the system after the request has completed, so the response code it returns may be 
+    different on subsequent requests, the system state will be the same every time
+        * example: deleting resource that exists (state of the resource is the same - it will not exist, but the
+        responses differ)
+            * first: 200 OK
+            * next: 404 NOT FOUND
 * nullimpotent
+    * the side-effects of N > 0 identical requests is the same as for a single request (aside from error or 
+    expiration issues)
 * cacheable
 
 ### spring context
