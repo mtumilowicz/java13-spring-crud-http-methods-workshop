@@ -21,7 +21,7 @@ public class ProcessConfigController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> findById(@PathVariable String id) {
-        return ResponseEntityBuilder.found(processConfigService.findById(id), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.findById(id), ProcessConfigApiOutput::from);
     }
 
     @PostMapping
@@ -31,7 +31,7 @@ public class ProcessConfigController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> patch(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.found(processConfigService.partialUpdate(partialUpdateInput.toDomain(id)), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.partialUpdate(partialUpdateInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")
@@ -41,7 +41,7 @@ public class ProcessConfigController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
-        return ResponseEntityBuilder.found(processConfigService.deleteById(id), Function.identity());
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.deleteById(id), Function.identity());
     }
 
     @RequestMapping(method = RequestMethod.OPTIONS)

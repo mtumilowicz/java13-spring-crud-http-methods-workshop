@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class ResponseEntityBuilder {
-    public static <T, Output> ResponseEntity<Output> found(Optional<T> domainObject, Function<T, Output> mapper) {
+    public static <T, Output> ResponseEntity<Output> okOrNotFound(Optional<T> domainObject, Function<T, Output> mapper) {
         return domainObject
                 .map(mapper::apply)
                 .map(ResponseEntity::ok)
