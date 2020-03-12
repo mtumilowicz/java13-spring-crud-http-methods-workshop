@@ -10,6 +10,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.function.Function;
+
 @RestController
 @RequestMapping("app")
 public class ProcessConfigController {
@@ -39,14 +41,8 @@ public class ProcessConfigController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
-        if (processConfigService.existsById(id)) {
-            processConfigService.deleteById(id);
-            return ResponseEntity.ok(id);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntityBuilder.found(processConfigService.deleteById(id), Function.identity());
     }
-
 
     @RequestMapping(method = RequestMethod.OPTIONS)
     ResponseEntity<?> options() {

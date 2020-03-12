@@ -34,8 +34,13 @@ public class ProcessConfigService {
         return save(createFrom(creationInput));
     }
 
-    public void deleteById(String id) {
-        processConfigRepository.deleteById(id);
+    public Optional<String> deleteById(String id) {
+        if (existsById(id)) {
+            processConfigRepository.deleteById(id);
+            return Optional.of(id);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public boolean existsById(String id) {
