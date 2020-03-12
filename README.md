@@ -22,6 +22,18 @@
 * https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
 
 ### http methods characteristics
+|HTTP method   |Safe   |Idempotent   |Cacheable   |
+|---           |---    |---          |---         |
+|GET           |V      |V            |V           |
+|HEAD          |V      |V            |V           |
+|OPTIONS       |V      |V            |X           |
+|TRACE         |V      |V            |X           |
+|PUT           |X      |V            |X           |
+|DELETE        |X      |V            |X           |
+|POST          |X      |X            |V           |
+|CONNECT       |X      |X            |X           |
+|PATCH         |X      |X            |X           |
+
 * safe methods
     * safe methods are HTTP methods that do not modify resources representation
     * if it leads to a read-only operation
@@ -51,7 +63,13 @@
     * the side-effects of N >= 0 identical requests is the same as for a single request (aside from error or 
     expiration issues)
     * every nullimpotent is idempotent
-* cacheable response is an HTTP response that can be cached
+* cacheable
+    * request methods can be defined as "cacheable" to indicate that responses to them are allowed to be stored for 
+    future reuse
+    * in general, safe methods that do not depend on a current or authoritative response are defined as
+    cacheable
+    * the overwhelming majority of cache implementations only support GET and HEAD
+        * however POST could be also defined as cacheable
 
 ### spring context
 * @RequestMapping methods mapped to "GET" are also implicitly mapped to "HEAD", i.e. there is no need to have "HEAD" 
