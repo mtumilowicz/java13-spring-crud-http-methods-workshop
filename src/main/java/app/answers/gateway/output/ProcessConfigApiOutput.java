@@ -1,6 +1,6 @@
-package app.gateway.output;
+package app.answers.gateway.output;
 
-import app.domain.ProcessConfig;
+import app.answers.domain.ProcessConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

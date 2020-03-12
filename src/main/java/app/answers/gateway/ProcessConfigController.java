@@ -1,10 +1,10 @@
-package app.gateway;
+package app.answers.gateway;
 
-import app.domain.ProcessConfigService;
-import app.gateway.input.ProcessConfigCreationApiInput;
-import app.gateway.input.ProcessConfigPartialUpdateApiInput;
-import app.gateway.input.ProcessConfigReplaceApiInput;
-import app.gateway.output.ProcessConfigApiOutput;
+import app.answers.domain.ProcessConfigService;
+import app.answers.gateway.input.ProcessConfigCreationApiInput;
+import app.answers.gateway.input.ProcessConfigPartialUpdateApiInput;
+import app.answers.gateway.input.ProcessConfigReplaceApiInput;
+import app.answers.gateway.output.ProcessConfigApiOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;

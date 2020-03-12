@@ -1,6 +1,6 @@
-package app.infrastructure.jpa;
+package app.answers.infrastructure.jpa;
 
-import app.domain.ProcessConfig;
+import app.answers.domain.ProcessConfig;
 import com.google.common.collect.ImmutableMap;
 import lombok.Data;
 

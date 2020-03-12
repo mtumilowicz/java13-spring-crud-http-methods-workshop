@@ -1,4 +1,4 @@
-package app.functional
+package app.mockmvc
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.test.web.servlet.MvcResult

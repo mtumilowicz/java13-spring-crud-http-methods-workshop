@@ -1,8 +1,7 @@
-package app.infrastructure.configuration;
+package app.answers.infrastructure.configuration;
 
-import app.domain.ProcessConfig;
-import app.domain.ProcessConfigRepository;
-import app.domain.ProcessConfigService;
+import app.answers.domain.ProcessConfigRepository;
+import app.answers.domain.ProcessConfigService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

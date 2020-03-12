@@ -1,6 +1,6 @@
-package app.gateway.input;
+package app.answers.gateway.input;
 
-import app.domain.ProcessConfigCreationInput;
+import app.answers.domain.ProcessConfigCreationInput;
 import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

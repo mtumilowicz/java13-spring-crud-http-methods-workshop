@@ -1,4 +1,4 @@
-package app.domain;
+package app.answers.domain;
 
 import lombok.RequiredArgsConstructor;
 

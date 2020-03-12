@@ -1,4 +1,4 @@
-package app.gateway;
+package app.answers.gateway;
 
 import org.springframework.http.ResponseEntity;
 

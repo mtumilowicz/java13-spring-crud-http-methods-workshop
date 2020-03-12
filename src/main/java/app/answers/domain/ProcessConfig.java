@@ -1,4 +1,4 @@
-package app.domain;
+package app.answers.domain;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.Builder;
