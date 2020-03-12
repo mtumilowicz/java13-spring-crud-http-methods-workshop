@@ -3,6 +3,7 @@
     * https://developer.mozilla.org/en-US/docs/Glossary/safe
     * https://harikt.com/blog/2013/11/01/rest-is-delete-idempotent/
     * https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications
+    * https://tools.ietf.org/html/rfc7231
 
 ## preface
 * goals of this workshop:
@@ -25,9 +26,16 @@
     * safe methods are HTTP methods that do not modify resources representation
     * if it leads to a read-only operation
     * servers can alter their state: e.g. they can log or keep statistics
+        * even though the log storage might become full and crash the server
+    * a safe request initiated by selecting an advertisement on the Web will often have the side
+    effect of charging an advertising account
     * safe methods are methods that can be cached, prefetched without any repercussions to the resource
+        * purpose of distinguishing between safe and unsafe methods is to allow automated retrieval processes (spiders) 
+        and cache performance optimization (pre-fetching) to work without fear of causing harm
     * it is not possible to ensure that the server does not generate side-effects as a result of 
     performing a GET request
+        * failure to do so will result in unfortunate side effects when automated processes perform a GET on every 
+        URI reference for the sake of link maintenance, pre-fetching, building a search index, etc.
 * idempotent
     * the side-effects of N > 0 identical requests is the same as for a single request (aside from error or 
     expiration issues)
@@ -37,10 +45,13 @@
         responses differ)
             * first: 200 OK
             * next: 404 NOT FOUND
+    * the request can be repeated automatically if a communication failure occurs before the client is able to read 
+    the server's response
 * nullimpotent
-    * the side-effects of N > 0 identical requests is the same as for a single request (aside from error or 
+    * the side-effects of N >= 0 identical requests is the same as for a single request (aside from error or 
     expiration issues)
-* cacheable
+    * every nullimpotent is idempotent
+* cacheable response is an HTTP response that can be cached
 
 ### spring context
 * @RequestMapping methods mapped to "GET" are also implicitly mapped to "HEAD", i.e. there is no need to have "HEAD" 
