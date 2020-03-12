@@ -4,11 +4,16 @@
     * https://harikt.com/blog/2013/11/01/rest-is-delete-idempotent/
     * https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications
     * https://tools.ietf.org/html/rfc7231
+    * https://www.blackhillsinfosec.com/three-minutes-with-the-http-trace-method/
+    * https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+    * https://nordicapis.com/understanding-idempotency-and-safety-in-api-design/
+    * https://tools.ietf.org/html/rfc5789 (patch)
 
 ## preface
 * goals of this workshop:
-    * introduction to all http methods
+    * overview of all http methods
     * introduction to characteristics of http methods
+    * overview of http response statuses
     * introduction to mapping a map in hibernate
     * introduction to spring boot h2 console
         * https://github.com/mtumilowicz/spring-boot-h2-console
@@ -18,8 +23,15 @@
 * workshop: workshop package, answers: answers package
 
 ## http methods
-* https://www.blackhillsinfosec.com/three-minutes-with-the-http-trace-method/
-* https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+* GET
+* HEAD
+* POST
+* PUT
+* PATCH
+* DELETE
+* CONNECT
+* OPTIONS
+* TRACE
 
 ### http methods characteristics
 |HTTP method   |Safe   |Idempotent   |Cacheable   |
