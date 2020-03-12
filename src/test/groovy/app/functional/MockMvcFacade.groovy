@@ -52,7 +52,7 @@ class MockMvcFacade {
         )
     }
 
-    private def prepareHeaders(Map<String, String> inputHeaders) {
+    private def prepareHeaders(inputHeaders) {
         HttpHeaders headers = new HttpHeaders()
         !inputHeaders.each { headers.add(it.headerName, it.headerValue) }
         headers
