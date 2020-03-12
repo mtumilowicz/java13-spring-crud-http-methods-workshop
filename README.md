@@ -3,9 +3,8 @@
     * https://developer.mozilla.org/en-US/docs/Glossary/safe
     * https://harikt.com/blog/2013/11/01/rest-is-delete-idempotent/
     * https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#Idempotent_methods_and_web_applications
-    * https://tools.ietf.org/html/rfc7231
+    * https://tools.ietf.org/html/rfc7231 (Hypertext Transfer Protocol (HTTP/1.1))
     * https://www.blackhillsinfosec.com/three-minutes-with-the-http-trace-method/
-    * https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
     * https://nordicapis.com/understanding-idempotency-and-safety-in-api-design/
     * https://tools.ietf.org/html/rfc5789 (patch)
 
@@ -24,14 +23,35 @@
 
 ## http methods
 * GET
+    * is the primary mechanism of information retrieval and the focus of almost all performance optimizations
 * HEAD
+    * is identical to GET except that the server MUST NOT send a message body in the response
+    * the server SHOULD send the same header fields in response to a HEAD request as it would have sent if the request 
+    had been a GET, except that the payload header fields MAY be omitted
+    * is often used for testing hypertext links for validity, accessibility, and recent modification
 * POST
+    * requests that the target resource process the representation enclosed in the request according to the resource's
+    own specific semantics
+    * used to creating a new resource that has yet to be identified by the origin server
 * PUT
+    * requests that the state of the target resource be created or replaced with the state defined by the 
+    representation enclosed in the request message payload
+    * A service that selects a proper URI on behalf of the client, after receiving a state-changing
+    request, SHOULD be implemented using the POST method rather than PUT
 * PATCH
 * DELETE
+    * requests that the origin server remove the association between the target resource and its current functionality
+    * it expresses a deletion operation on the URI mapping of the origin server rather than an expectation that the 
+    previously associated information be deleted
 * CONNECT
+    * requests that the recipient establish a tunnel to the destination origin server identified by the request-target 
+    and, if successful, thereafter restrict its behavior to blind forwarding of packets, in both directions, until 
+    the tunnel is closed
 * OPTIONS
+    * requests information about the communication options available for the target resource, at either the origin 
+    server or an intervening intermediary
 * TRACE
+    * requests a remote, application-level loop-back of the request message
 
 ### http methods characteristics
 |HTTP method   |Safe   |Idempotent   |Cacheable   |
