@@ -17,11 +17,10 @@ public class ProcessConfigService {
     }
 
     @Transactional
-    public ProcessConfig createOrUpdate(ProcessConfigUpdateInput configUpdateInput) {
-        ProcessConfig processConfig = findById(configUpdateInput.id)
+    public Optional<ProcessConfig> update(ProcessConfigUpdateInput configUpdateInput) {
+        return findById(configUpdateInput.id)
                 .map(updateWith(configUpdateInput))
-                .orElseGet(createFrom(configUpdateInput));
-        return save(processConfig);
+                .map(this::save);
     }
 
     public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput) {

@@ -67,28 +67,6 @@ class FunctionalTests extends Specification {
         getProcessConfig.properties == createdProcessConfig.properties
     }
 
-    def 'if resource that you want to put not exists - put it'() {
-        given:
-        def id = UUID.randomUUID().toString()
-
-        when: 'resource is put'
-        def responseOfPut = mockMvcFacade.put([
-                url : '/app/' + id,
-                body: [props: [a: 'b']]
-        ])
-                .andExpect(status().isOk())
-                .andReturn()
-        ProcessConfigApiOutput putProcessConfig = ResponseMapper.parseResponse(responseOfPut, ProcessConfigApiOutput)
-
-        then: 'verify response'
-        putProcessConfig.id == id
-        putProcessConfig.properties == [a: 'b']
-
-        and: 'check if resource was added'
-        mockMvcFacade.get([url: "/app/$id"])
-                .andExpect(status().isOk())
-    }
-
     def 'if resource that you want to put exists - replace it'() {
         given: 'prepare resource that would be replaced'
         def postResponse = mockMvcFacade.post([

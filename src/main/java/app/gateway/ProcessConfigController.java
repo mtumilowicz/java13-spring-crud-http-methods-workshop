@@ -36,7 +36,7 @@ public class ProcessConfigController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> put(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.ok(processConfigService.createOrUpdate(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.update(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @DeleteMapping("/{id}")
