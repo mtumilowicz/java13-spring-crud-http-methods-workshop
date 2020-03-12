@@ -1,9 +1,11 @@
 package app.domain;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.With;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -11,11 +13,12 @@ import java.util.Map;
 @With
 public class ProcessConfig {
     String id;
-    Map<String, String> properties;
+    ImmutableMap<String, String> properties;
 
     public ProcessConfig putAll(Map<String, String> props) {
-        properties.putAll(props);
-
-        return this;
+        HashMap<String, String> updatedProperties = new HashMap<>();
+        updatedProperties.putAll(properties);
+        updatedProperties.putAll(props);
+        return withProperties(ImmutableMap.copyOf(updatedProperties));
     }
 }

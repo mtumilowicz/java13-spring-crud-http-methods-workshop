@@ -1,5 +1,6 @@
 package app.domain;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,5 +9,5 @@ import java.util.Map;
 @Builder
 public class ProcessConfigPartialUpdateInput {
     String id;
-    Map<String, String> props;
+    ImmutableMap<String, String> props;
 }

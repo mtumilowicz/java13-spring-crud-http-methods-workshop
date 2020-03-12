@@ -1,6 +1,7 @@
 package app.infrastructure.jpa;
 
 import app.domain.ProcessConfig;
+import com.google.common.collect.ImmutableMap;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,7 +35,7 @@ public class ProcessConfigEntity {
     public ProcessConfig toDomain() {
         return ProcessConfig.builder()
                 .id(id)
-                .properties(properties)
+                .properties(ImmutableMap.copyOf(properties))
                 .build();
     }
 }

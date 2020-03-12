@@ -2,6 +2,7 @@ package app.gateway.input;
 
 import app.domain.ProcessConfigCreationInput;
 import app.domain.ProcessConfigPartialUpdateInput;
+import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class ProcessConfigPartialUpdateApiInput {
     public ProcessConfigPartialUpdateInput toDomain(String id) {
         return ProcessConfigPartialUpdateInput.builder()
                 .id(id)
-                .props(props)
+                .props(ImmutableMap.copyOf(props))
                 .build();
     }
 }
