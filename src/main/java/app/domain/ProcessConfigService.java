@@ -35,15 +35,10 @@ public class ProcessConfigService {
     }
 
     public Optional<String> deleteById(String id) {
-        if (existsById(id)) {
-            processConfigRepository.deleteById(id);
-            return Optional.of(id);
-        } else {
-            return Optional.empty();
-        }
+        return existsById(id).flatMap(processConfigRepository::deleteById);
     }
 
-    public boolean existsById(String id) {
+    public Optional<String> existsById(String id) {
         return processConfigRepository.existsById(id);
     }
 

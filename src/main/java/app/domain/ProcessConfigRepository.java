@@ -5,9 +5,9 @@ import java.util.Optional;
 public interface ProcessConfigRepository {
     Optional<ProcessConfig> findById(String id);
 
-    void deleteById(String id);
+    Optional<String> deleteById(String id);
 
     ProcessConfig save(ProcessConfig pc);
 
-    boolean existsById(String id);
+    Optional<String> existsById(String id);
 }
