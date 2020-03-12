@@ -7,5 +7,6 @@ import java.util.Map;
 
 @Builder
 public class ProcessConfigUpdateInput {
+    String id;
     Map<String, String> props;
 }

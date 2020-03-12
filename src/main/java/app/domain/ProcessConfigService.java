@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 @RequiredArgsConstructor
 public class ProcessConfigService {
@@ -15,32 +17,21 @@ public class ProcessConfigService {
     }
 
     @Transactional
-    public ProcessConfig createOrUpdate(ProcessConfigUpdateInput configUpdateInput, String id) {
-        ProcessConfig processConfig = findById(id)
-                .map(config -> config.withProperties(configUpdateInput.props))
-                .orElse(ProcessConfig.builder()
-                        .id(id)
-                        .properties(configUpdateInput.props)
-                        .build()
-                );
+    public ProcessConfig createOrUpdate(ProcessConfigUpdateInput configUpdateInput) {
+        ProcessConfig processConfig = findById(configUpdateInput.id)
+                .map(updateWith(configUpdateInput))
+                .orElseGet(createFrom(configUpdateInput));
         return save(processConfig);
     }
 
-    private ProcessConfig save(ProcessConfig processConfig) {
-        return processConfigRepository.save(processConfig);
-    }
-
-    public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput, String id) {
-        return processConfigRepository.findById(id)
+    public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput) {
+        return processConfigRepository.findById(partialUpdateInput.id)
                 .map(config -> config.putAll(partialUpdateInput.props))
                 .map(processConfigRepository::save);
     }
 
     public ProcessConfig create(ProcessConfigCreationInput creationInput) {
-        ProcessConfig processConfig = ProcessConfig.builder()
-                .properties(creationInput.props)
-                .build();
-        return save(processConfig);
+        return save(createFrom(creationInput));
     }
 
     public void deleteById(String id) {
@@ -49,5 +40,26 @@ public class ProcessConfigService {
 
     public boolean existsById(String id) {
         return processConfigRepository.existsById(id);
+    }
+
+    private UnaryOperator<ProcessConfig> updateWith(ProcessConfigUpdateInput updateInput) {
+        return config -> config.withProperties(updateInput.props);
+    }
+
+    private Supplier<ProcessConfig> createFrom(ProcessConfigUpdateInput updateInput) {
+        return () -> ProcessConfig.builder()
+                .id(updateInput.id)
+                .properties(updateInput.props)
+                .build();
+    }
+
+    private ProcessConfig createFrom(ProcessConfigCreationInput creationInput) {
+        return ProcessConfig.builder()
+                .properties(creationInput.props)
+                .build();
+    }
+
+    private ProcessConfig save(ProcessConfig processConfig) {
+        return processConfigRepository.save(processConfig);
     }
 }

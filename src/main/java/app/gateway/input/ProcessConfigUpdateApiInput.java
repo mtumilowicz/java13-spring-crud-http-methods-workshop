@@ -15,8 +15,9 @@ import java.util.Map;
 public class ProcessConfigUpdateApiInput {
     Map<String, String> props;
 
-    public ProcessConfigUpdateInput toDomain() {
+    public ProcessConfigUpdateInput toDomain(String id) {
         return ProcessConfigUpdateInput.builder()
+                .id(id)
                 .props(props)
                 .build();
     }

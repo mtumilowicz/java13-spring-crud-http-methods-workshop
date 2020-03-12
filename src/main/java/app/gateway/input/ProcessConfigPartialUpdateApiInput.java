@@ -14,10 +14,12 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProcessConfigPartialUpdateApiInput {
+    String id;
     Map<String, String> props;
 
-    public ProcessConfigPartialUpdateInput toDomain() {
+    public ProcessConfigPartialUpdateInput toDomain(String id) {
         return ProcessConfigPartialUpdateInput.builder()
+                .id(id)
                 .props(props)
                 .build();
     }
