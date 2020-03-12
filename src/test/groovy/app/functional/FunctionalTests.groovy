@@ -1,6 +1,6 @@
-package app.answers.functional
+package app.functional
 
-import app.answers.gateway.output.ProcessConfigApiOutput
+import app.gateway.output.ProcessConfigApiOutput
 import app.mockmvc.MockMvcFacade
 import app.mockmvc.ResponseMapper
 import org.springframework.beans.factory.annotation.Autowired

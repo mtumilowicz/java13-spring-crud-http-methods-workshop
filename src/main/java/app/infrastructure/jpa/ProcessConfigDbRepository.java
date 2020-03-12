@@ -1,7 +1,7 @@
-package app.answers.infrastructure.jpa;
+package app.infrastructure.jpa;
 
-import app.answers.domain.ProcessConfig;
-import app.answers.domain.ProcessConfigRepository;
+import app.domain.ProcessConfig;
+import app.domain.ProcessConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

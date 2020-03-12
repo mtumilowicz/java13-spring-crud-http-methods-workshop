@@ -1,4 +1,4 @@
-package app.answers.domain;
+package app.domain;
 
 import java.util.Optional;
 

@@ -1,10 +1,10 @@
-package app.answers.gateway;
+package app.gateway;
 
-import app.answers.domain.ProcessConfigService;
-import app.answers.gateway.input.ProcessConfigCreationApiInput;
-import app.answers.gateway.input.ProcessConfigPartialUpdateApiInput;
-import app.answers.gateway.input.ProcessConfigReplaceApiInput;
-import app.answers.gateway.output.ProcessConfigApiOutput;
+import app.gateway.input.ProcessConfigCreationApiInput;
+import app.gateway.input.ProcessConfigPartialUpdateApiInput;
+import app.gateway.input.ProcessConfigReplaceApiInput;
+import app.gateway.output.ProcessConfigApiOutput;
+import app.domain.ProcessConfigServiceWorkshop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.function.Function;
 
 @RestController
-@RequestMapping("app")
-public class ProcessConfigController {
+@RequestMapping("app/workshop")
+public class ProcessConfigControllerWorkshop {
 
     @Autowired
-    ProcessConfigService processConfigService;
+    ProcessConfigServiceWorkshop processConfigService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ProcessConfigApiOutput> findById(@PathVariable String id) {

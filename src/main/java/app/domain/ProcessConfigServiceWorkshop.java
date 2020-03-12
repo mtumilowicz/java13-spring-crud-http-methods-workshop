@@ -1,14 +1,13 @@
-package app.answers.domain;
+package app.domain;
 
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 @RequiredArgsConstructor
-public class ProcessConfigService {
+public class ProcessConfigServiceWorkshop {
 
     private final ProcessConfigRepository processConfigRepository;
 
@@ -18,14 +17,14 @@ public class ProcessConfigService {
 
     @Transactional
     public Optional<ProcessConfig> replace(ProcessConfigReplaceInput configUpdateInput) {
-        return findById(configUpdateInput.id)
+        return findById(configUpdateInput.getId())
                 .map(updateWith(configUpdateInput))
                 .map(this::save);
     }
 
     public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput) {
-        return processConfigRepository.findById(partialUpdateInput.id)
-                .map(config -> config.putAll(partialUpdateInput.props))
+        return processConfigRepository.findById(partialUpdateInput.getId())
+                .map(config -> config.putAll(partialUpdateInput.getProps()))
                 .map(processConfigRepository::save);
     }
 
@@ -42,19 +41,12 @@ public class ProcessConfigService {
     }
 
     private UnaryOperator<ProcessConfig> updateWith(ProcessConfigReplaceInput updateInput) {
-        return config -> config.withProperties(updateInput.props);
-    }
-
-    private Supplier<ProcessConfig> createFrom(ProcessConfigReplaceInput updateInput) {
-        return () -> ProcessConfig.builder()
-                .id(updateInput.id)
-                .properties(updateInput.props)
-                .build();
+        return config -> config.withProperties(updateInput.getProps());
     }
 
     private ProcessConfig createFrom(ProcessConfigCreationInput creationInput) {
         return ProcessConfig.builder()
-                .properties(creationInput.props)
+                .properties(creationInput.getProps())
                 .build();
     }
 
