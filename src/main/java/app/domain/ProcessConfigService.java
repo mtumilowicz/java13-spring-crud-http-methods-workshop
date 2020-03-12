@@ -17,7 +17,7 @@ public class ProcessConfigService {
     }
 
     @Transactional
-    public Optional<ProcessConfig> update(ProcessConfigUpdateInput configUpdateInput) {
+    public Optional<ProcessConfig> replace(ProcessConfigReplaceInput configUpdateInput) {
         return findById(configUpdateInput.id)
                 .map(updateWith(configUpdateInput))
                 .map(this::save);
@@ -41,11 +41,11 @@ public class ProcessConfigService {
         return processConfigRepository.existsById(id);
     }
 
-    private UnaryOperator<ProcessConfig> updateWith(ProcessConfigUpdateInput updateInput) {
+    private UnaryOperator<ProcessConfig> updateWith(ProcessConfigReplaceInput updateInput) {
         return config -> config.withProperties(updateInput.props);
     }
 
-    private Supplier<ProcessConfig> createFrom(ProcessConfigUpdateInput updateInput) {
+    private Supplier<ProcessConfig> createFrom(ProcessConfigReplaceInput updateInput) {
         return () -> ProcessConfig.builder()
                 .id(updateInput.id)
                 .properties(updateInput.props)

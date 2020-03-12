@@ -3,7 +3,7 @@ package app.gateway;
 import app.domain.ProcessConfigService;
 import app.gateway.input.ProcessConfigCreationApiInput;
 import app.gateway.input.ProcessConfigPartialUpdateApiInput;
-import app.gateway.input.ProcessConfigUpdateApiInput;
+import app.gateway.input.ProcessConfigReplaceApiInput;
 import app.gateway.output.ProcessConfigApiOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -30,13 +30,13 @@ public class ProcessConfigController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> patch(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
+    public ResponseEntity<ProcessConfigApiOutput> partialUpdate(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
         return ResponseEntityBuilder.okOrNotFound(processConfigService.partialUpdate(partialUpdateInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> put(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.okOrNotFound(processConfigService.update(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ProcessConfigReplaceApiInput updateInput, @PathVariable String id) {
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.replace(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @DeleteMapping("/{id}")

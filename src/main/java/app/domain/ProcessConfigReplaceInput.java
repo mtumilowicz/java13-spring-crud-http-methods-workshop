@@ -7,7 +7,7 @@ import lombok.Getter;
 import java.util.Map;
 
 @Builder
-public class ProcessConfigUpdateInput {
+public class ProcessConfigReplaceInput {
     String id;
     ImmutableMap<String, String> props;
 }
