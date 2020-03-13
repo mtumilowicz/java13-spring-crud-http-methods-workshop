@@ -12,45 +12,27 @@ public class ProcessConfigServiceWorkshop {
     private final ProcessConfigRepository processConfigRepository;
 
     public Optional<ProcessConfig> findById(String id) {
-        return processConfigRepository.findById(id);
+        return null;
     }
 
     @Transactional
     public Optional<ProcessConfig> replace(ProcessConfigReplaceInput configUpdateInput) {
-        return findById(configUpdateInput.getId())
-                .map(updateWith(configUpdateInput))
-                .map(this::save);
+        return null;
     }
 
     public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput) {
-        return processConfigRepository.findById(partialUpdateInput.getId())
-                .map(config -> config.putAll(partialUpdateInput.getProps()))
-                .map(processConfigRepository::save);
+        return null;
     }
 
     public ProcessConfig create(ProcessConfigCreationInput creationInput) {
-        return save(createFrom(creationInput));
+        return null;
     }
 
     public Optional<String> deleteById(String id) {
-        return existsById(id).flatMap(processConfigRepository::deleteById);
+        return null;
     }
 
     public Optional<String> existsById(String id) {
-        return processConfigRepository.existsById(id);
-    }
-
-    private UnaryOperator<ProcessConfig> updateWith(ProcessConfigReplaceInput updateInput) {
-        return config -> config.withProperties(updateInput.getProps());
-    }
-
-    private ProcessConfig createFrom(ProcessConfigCreationInput creationInput) {
-        return ProcessConfig.builder()
-                .properties(creationInput.getProps())
-                .build();
-    }
-
-    private ProcessConfig save(ProcessConfig processConfig) {
-        return processConfigRepository.save(processConfig);
+        return null;
     }
 }
