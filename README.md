@@ -7,6 +7,7 @@
     * https://www.blackhillsinfosec.com/three-minutes-with-the-http-trace-method/
     * https://nordicapis.com/understanding-idempotency-and-safety-in-api-design/
     * https://tools.ietf.org/html/rfc5789 (patch)
+    * https://httpstatusdogs.com
 
 ## preface
 * goals of this workshop:
@@ -24,15 +25,44 @@
 ## http response status codes
 * the first digit of the status-code defines the class of response
 * 1xx (Informational): The request was received, continuing process
+    * indicates an interim response for communicating connection status or request progress prior to completing 
+    the requested action and sending a final response
     * 100 - Continue
+        * indicates that the initial part of a request has been received and has not yet been rejected by the server
+        * the server intends to send a final response after the request has been fully received and acted upon
+        * example
+            * server has received the request headers, and that the client should proceed to send the request body
+            * if the request body is large, sending it to a server when a request has already been rejected based upon 
+            inappropriate headers is inefficient
     * 101 - Switching Protocols
+        * indicates that the server understands and is willing to comply with the client's request, via the Upgrade 
+        header field, for a change in the application protocol being used on this connection
+        * example
+            * websockets
+            * switching to a newer version of HTTP
 * 2xx (Successful): The request was successfully received, understood, and accepted
-    * 200 - OK                            
-    * 201 - Created                       
-    * 202 - Accepted                      
-    * 203 - Non-Authoritative Information 
-    * 204 - No Content                    
-    * 205 - Reset Content                 
+    * 200 - OK
+        * indicates that the request has succeeded
+        * payload in response depends on the request method
+    * 201 - Created
+        * indicates that the request has been fulfilled and has resulted in one or more new resources being created
+        * the request is identified by a Location header field in the response
+    * 202 - Accepted
+        * indicates that the request has been accepted for processing, but the processing has not been completed
+        * its purpose is to allow a server to accept a request without requiring the connection to the server persist 
+        until the process is completed
+    * 203 - Non-Authoritative Information
+    * 204 - No Content
+        * indicates that the server has successfully fulfilled the request and that there is no additional content 
+        to send in the response payload body
+        * is commonly used with document editing interfaces corresponding to a "save" action, such that the document
+        being saved remains available to the user for editing
+    * 205 - Reset Content
+        * indicates that the server has fulfilled the request and desires that the user agent reset the 
+        "document view", which caused the request to be sent, to its original state
+        * is intended to support a common data entry use case where the user enters data, causes the entered data 
+        to be submitted in a request, and then the data entry mechanism is reset for the next entry so that the 
+        user can easily initiate another input action
     * 206 - Partial Content  
 * 3xx (Redirection): Further action needs to be taken in order to complete the request
     * 300 - Multiple Choices              
