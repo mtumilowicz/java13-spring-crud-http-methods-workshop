@@ -183,7 +183,7 @@ class FunctionalTests extends Specification {
 
     def 'http options check'() {
         given: 'http methods that should be supported'
-        def methods = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS']
+        def methods = ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS']
 
         when: 'get options'
         def mockMvcResponse = mockMvcFacade.options([url: root])

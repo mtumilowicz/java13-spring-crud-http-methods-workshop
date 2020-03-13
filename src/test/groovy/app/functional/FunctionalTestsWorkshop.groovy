@@ -17,7 +17,7 @@ class FunctionalTestsWorkshop extends Specification {
     @Autowired
     MockMvcFacade mockMvcFacade
 
-    def root = '/app/workshop'
+    def root = '/workshop'
 
     def 'if resource that you want to get not exists - 404'() {
         expect:
@@ -183,7 +183,7 @@ class FunctionalTestsWorkshop extends Specification {
 
     def 'http options check'() {
         given: 'http methods that should be supported'
-        def methods = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS']
+        def methods = ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS']
 
         when: 'get options'
         def mockMvcResponse = mockMvcFacade.options([url: root])
