@@ -30,13 +30,13 @@ public class ProcessConfigController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> partialUpdate(@RequestBody ProcessConfigUpdateApiInput partialUpdateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.okOrNotFound(processConfigService.update(partialUpdateInput.toDomain(id)), ProcessConfigApiOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> update(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.update(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ProcessConfigReplaceApiInput updateInput, @PathVariable String id) {
-        return ResponseEntityBuilder.okOrNotFound(processConfigService.replace(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ProcessConfigReplaceApiInput replaceInput, @PathVariable String id) {
+        return ResponseEntityBuilder.okOrNotFound(processConfigService.replace(replaceInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @DeleteMapping("/{id}")
