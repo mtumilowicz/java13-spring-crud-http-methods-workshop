@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.function.Function;
 
@@ -25,8 +26,10 @@ public class ProcessConfigController {
     }
 
     @PostMapping
-    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput) {
-        return ResponseEntityBuilder.ok(processConfigService.create(creationInput.toDomain()), ProcessConfigApiOutput::from);
+    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput, UriComponentsBuilder builder) {
+        return ResponseEntityBuilder.created(processConfigService.create(creationInput.toDomain()),
+                ProcessConfigApiOutput::from,
+                e -> builder.path("/{id}").buildAndExpand(e.getId()).toUri());
     }
 
     @PatchMapping("/{id}")

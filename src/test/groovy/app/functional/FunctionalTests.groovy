@@ -19,19 +19,41 @@ class FunctionalTests extends Specification {
 
     def root = '/app'
 
-    def 'if resource that you want to get not exists - 404'() {
+    def 'HEAD: if resource not exists - 404'() {
         expect:
-        mockMvcFacade.get([url: "$root/1"])
+        mockMvcFacade.head([url: "$root/1"])
                 .andExpect(status().isNotFound())
     }
 
-    def 'if resource that you want to get exists - get it'() {
+    def 'HEAD: if resource exists - 201'() {
         given: 'prepare resource to be further get'
         def responseOfCreate = mockMvcFacade.post([
                 url : root,
                 body: [props: [a: 'a']]
         ])
+                .andExpect(status().isCreated())
+                .andReturn()
+        ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
+
+        expect:
+        mockMvcFacade.head([url: "$root/$createdProcessConfig.id"])
                 .andExpect(status().isOk())
+                .andReturn()
+    }
+
+    def 'GET: if resource not exists - 404'() {
+        expect:
+        mockMvcFacade.get([url: "$root/1"])
+                .andExpect(status().isNotFound())
+    }
+
+    def 'GET: if resource exists - 200 and get it'() {
+        given: 'prepare resource to be further get'
+        def responseOfCreate = mockMvcFacade.post([
+                url : root,
+                body: [props: [a: 'a']]
+        ])
+                .andExpect(status().isCreated())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
 
@@ -46,13 +68,13 @@ class FunctionalTests extends Specification {
         getProcessConfig.properties == createdProcessConfig.properties
     }
 
-    def 'create resource'() {
+    def 'POST: create resource'() {
         when: 'prepare resource to be further get'
         def responseOfCreate = mockMvcFacade.post([
                 url : root,
                 body: [props: [a: 'a']]
         ])
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
 
@@ -71,13 +93,13 @@ class FunctionalTests extends Specification {
         getProcessConfig.properties == createdProcessConfig.properties
     }
 
-    def 'if resource that you want to put exists - replace it'() {
+    def 'PUT: if resource already exists - replace it'() {
         given: 'prepare resource that would be replaced'
         def postResponse = mockMvcFacade.post([
                 url : root,
                 body: [props: [a: 'a']]
         ])
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
         ProcessConfigApiOutput postProcessConfig = ResponseMapper.parseResponse(postResponse, ProcessConfigApiOutput)
 
@@ -105,7 +127,17 @@ class FunctionalTests extends Specification {
         getProcessConfig.properties == [a: 'b']
     }
 
-    def 'if resource that you want to patch cannot be found - 404'() {
+    def 'PUT: if resource not exists - 404'() {
+        expect: 'put resource'
+        mockMvcFacade.put([
+                url : "$root/1",
+                body: [props: [a: 'b']]
+        ])
+                .andExpect(status().isNotFound())
+                .andReturn()
+    }
+
+    def 'PATCH: if resource not exists - 404'() {
         expect:
         mockMvcFacade.patch([
                 url : "$root/1",
@@ -114,13 +146,13 @@ class FunctionalTests extends Specification {
                 .andExpect(status().isNotFound())
     }
 
-    def 'not empty case: if resource that you want to patch exists - patch it'() {
+    def 'PATCH: not empty case: if resource exists - patch it'() {
         given: 'prepare process config to be further deleted'
         def responseOfCreate = mockMvcFacade.post([
                 url : root,
-                body: [props: [a: 'a']]
+                body: [props: [a: 'a', b: 'b']]
         ])
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
 
@@ -130,69 +162,36 @@ class FunctionalTests extends Specification {
         when:
         def responseOfPatch = mockMvcFacade.patch([
                 url : "$root/$createdProcessConfig.id",
-                body: [props: [a: 'b']]
+                body: [props: [a: 'b', c: 'c']]
         ])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput patchedProcessConfig = ResponseMapper.parseResponse(responseOfPatch, ProcessConfigApiOutput)
 
         then: 'verify message of patch'
-        patchedProcessConfig.properties == [a: 'b']
+        patchedProcessConfig.properties == [a: 'b', c: 'c']
 
         and: 'verify that it was successfully patched'
         def responseOfGetAfterPatch = mockMvcFacade.get([url: "$root/$createdProcessConfig.id"])
                 .andExpect(status().isOk())
                 .andReturn()
         ProcessConfigApiOutput afterPatchProcessConfig = ResponseMapper.parseResponse(responseOfGetAfterPatch, ProcessConfigApiOutput)
-        afterPatchProcessConfig.properties == [a: 'b']
+        afterPatchProcessConfig.properties == [a: 'b', c: 'c']
     }
 
-    def 'empty case: if resource that you want to patch exists - patch it'() {
-        given: 'prepare process config to be further deleted'
-        def responseOfCreate = mockMvcFacade.post([
-                url : root,
-                body: [props: [a: 'a']]
-        ])
-                .andExpect(status().isOk())
-                .andReturn()
-        ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
-
-        and: 'verify that it was successfully added'
-        mockMvcFacade.get([url: "$root/$createdProcessConfig.id"])
-                .andExpect(status().isOk())
-        when:
-        def responseOfPatch = mockMvcFacade.patch([
-                url : "$root/$createdProcessConfig.id",
-                body: [props: [:]]
-        ])
-                .andExpect(status().isOk())
-                .andReturn()
-        ProcessConfigApiOutput patchedProcessConfig = ResponseMapper.parseResponse(responseOfPatch, ProcessConfigApiOutput)
-
-        then: 'verify message of patch'
-        patchedProcessConfig.properties == [:]
-
-        and: 'verify that it was successfully patched'
-        def responseOfGetAfterPatch = mockMvcFacade.get([url: "$root/$createdProcessConfig.id"])
-                .andExpect(status().isOk())
-                .andReturn()
-        ProcessConfigApiOutput afterPatchProcessConfig = ResponseMapper.parseResponse(responseOfGetAfterPatch, ProcessConfigApiOutput)
-        afterPatchProcessConfig.properties == [:]
-    }
-
-    def 'if resource that you want to delete cannot be found - 404'() {
+    def 'DELETE: if resource not exists - 404'() {
         expect:
         mockMvcFacade.delete([url: "$root/1"])
                 .andExpect(status().isNotFound())
     }
 
-    def 'if resource that you want to delete exists - delete it'() {
+    def 'DELETE: if resource exists - delete it'() {
         given: 'prepare process config to be further deleted'
         def responseOfCreate = mockMvcFacade.post([
                 url : "$root",
                 body: [props: [a: 'a']]
         ])
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
 
@@ -214,7 +213,7 @@ class FunctionalTests extends Specification {
                 .andExpect(status().isNotFound())
     }
 
-    def 'http options check'() {
+    def 'OPTIONS: check'() {
         given: 'http methods that should be supported'
         def methods = ['GET', 'HEAD', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS']
 

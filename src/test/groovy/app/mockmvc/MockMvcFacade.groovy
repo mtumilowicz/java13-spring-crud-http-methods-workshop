@@ -30,6 +30,10 @@ class MockMvcFacade {
         fireWithoutBody(MockMvcRequestBuilders.get(request.url), request)
     }
 
+    def head(Map request) {
+        fireWithoutBody(MockMvcRequestBuilders.head(request.url), request)
+    }
+
     def delete(Map request) {
         fireWithoutBody(MockMvcRequestBuilders.delete(request.url), request)
     }
