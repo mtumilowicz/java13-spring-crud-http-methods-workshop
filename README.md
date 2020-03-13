@@ -22,6 +22,18 @@
 * workshop: workshop package, answers: answers package
 
 ## http methods
+|HTTP method   |Request has body   |Response has body
+|---           |---                |---
+|POST          |V                  |V
+|PUT           |V                  |V
+|PATCH         |V                  |V
+|GET           |O                  |V
+|OPTIONS       |O                  |V
+|DELETE        |O                  |V
+|CONNECT       |O                  |V
+|TRACE         |X                  |V
+|HEAD          |O                  |X
+
 * GET
     * is the primary mechanism of information retrieval and the focus of almost all performance optimizations
 * HEAD
@@ -36,9 +48,22 @@
 * PUT
     * requests that the state of the target resource be created or replaced with the state defined by the 
     representation enclosed in the request message payload
-    * A service that selects a proper URI on behalf of the client, after receiving a state-changing
+    * service that selects a proper URI on behalf of the client, after receiving a state-changing
     request, SHOULD be implemented using the POST method rather than PUT
 * PATCH
+    * requests that a set of changes described in the request entity be applied to the resource identified by the 
+    Request-URI
+    * is used to apply partial modifications to a resource
+    * PUT method is already defined to overwrite a resource with a complete new body, and cannot be reused to do 
+    partial changes
+    * difference between the PUT and PATCH requests is reflected in the way the server processes the enclosed 
+    entity to modify the resource identified by the Request-URI
+        * PUT request, the enclosed entity is considered to be a modified version of the resource stored on 
+        the origin server, and the client is requesting that the stored version be replaced
+        * PATCH - the enclosed entity contains a set of instructions describing how a resource currently 
+        residing on the origin server should be modified to produce a new version
+    * can be issued in such a way as to be idempotent which also helps prevent bad outcomes from collisions 
+    between two PATCH requests on the same resource in a similar time frame
 * DELETE
     * requests that the origin server remove the association between the target resource and its current functionality
     * it expresses a deletion operation on the URI mapping of the origin server rather than an expectation that the 
