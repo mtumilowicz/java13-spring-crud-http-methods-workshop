@@ -2,7 +2,6 @@ package app.domain;
 
 import lombok.RequiredArgsConstructor;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
@@ -15,16 +14,15 @@ public class ProcessConfigService {
         return processConfigRepository.findById(id);
     }
 
-    @Transactional
-    public Optional<ProcessConfig> replace(ProcessConfigReplaceInput configUpdateInput) {
-        return findById(configUpdateInput.getId())
-                .map(drop -> recreateFrom(configUpdateInput))
+    public Optional<ProcessConfig> replace(ProcessConfigReplaceInput replaceInput) {
+        return findById(replaceInput.getId())
+                .map(drop -> recreateFrom(replaceInput))
                 .map(this::save);
     }
 
-    public Optional<ProcessConfig> update(ProcessConfigUpdateInput partialUpdateInput) {
-        return processConfigRepository.findById(partialUpdateInput.getId())
-                .map(updateFrom(partialUpdateInput))
+    public Optional<ProcessConfig> update(ProcessConfigUpdateInput updateInput) {
+        return findById(updateInput.getId())
+                .map(updateFrom(updateInput))
                 .map(processConfigRepository::save);
     }
 
