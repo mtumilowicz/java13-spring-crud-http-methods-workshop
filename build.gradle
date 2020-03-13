@@ -8,6 +8,7 @@ plugins {
 group = 'java13-spring-CRUD-http-methods-workshop'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '13'
+targetCompatibility = '13'
 
 configurations {
     compileOnly {
@@ -17,6 +18,10 @@ configurations {
 
 ext {
     swaggerVersion = '2.9.2'
+}
+
+test {
+    exclude '**/*Workshop*'
 }
 
 repositories {
