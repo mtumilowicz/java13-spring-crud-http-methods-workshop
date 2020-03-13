@@ -23,7 +23,7 @@ public class ProcessConfigService {
     public Optional<ProcessConfig> update(ProcessConfigUpdateInput updateInput) {
         return findById(updateInput.getId())
                 .map(updateFrom(updateInput))
-                .map(processConfigRepository::save);
+                .map(this::save);
     }
 
     public ProcessConfig create(ProcessConfigCreationInput creationInput) {
