@@ -29,7 +29,7 @@ public class ProcessConfigController {
     public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput, UriComponentsBuilder builder) {
         return ResponseEntityBuilder.created(processConfigService.create(creationInput.toDomain()),
                 ProcessConfigApiOutput::from,
-                e -> builder.path("/{id}").buildAndExpand(e.getId()).toUri());
+                e -> builder.path("app/{id}").buildAndExpand(e.getId()).toUri());
     }
 
     @PatchMapping("/{id}")

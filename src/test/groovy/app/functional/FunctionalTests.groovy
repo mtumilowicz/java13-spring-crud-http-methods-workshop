@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -75,12 +75,14 @@ class FunctionalTests extends Specification {
                 body: [props: [a: 'a']]
         ])
                 .andExpect(status().isCreated())
+                .andExpect(redirectedUrlPattern("**$root/*"))
                 .andReturn()
         ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
 
         then: 'verify response'
         createdProcessConfig.id
         createdProcessConfig.properties == [a: 'a']
+        responseOfCreate.getResponse().getHeader('location').endsWith(createdProcessConfig.id)
 
         and: 'resource was added'
         def responseOfGet = mockMvcFacade.get([url: "$root/$createdProcessConfig.id"])
