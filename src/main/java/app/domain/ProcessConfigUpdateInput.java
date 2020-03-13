@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @Getter
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class ProcessConfigPartialUpdateInput {
+public class ProcessConfigUpdateInput {
     String id;
     ImmutableMap<String, String> props;
 }

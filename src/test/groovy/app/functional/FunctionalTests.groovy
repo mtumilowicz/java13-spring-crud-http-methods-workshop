@@ -114,7 +114,7 @@ class FunctionalTests extends Specification {
                 .andExpect(status().isNotFound())
     }
 
-    def 'if resource that you want to patch exists - patch it'() {
+    def 'not empty case: if resource that you want to patch exists - patch it'() {
         given: 'prepare process config to be further deleted'
         def responseOfCreate = mockMvcFacade.post([
                 url : root,
@@ -145,6 +145,39 @@ class FunctionalTests extends Specification {
                 .andReturn()
         ProcessConfigApiOutput afterPatchProcessConfig = ResponseMapper.parseResponse(responseOfGetAfterPatch, ProcessConfigApiOutput)
         afterPatchProcessConfig.properties == [a: 'b']
+    }
+
+    def 'empty case: if resource that you want to patch exists - patch it'() {
+        given: 'prepare process config to be further deleted'
+        def responseOfCreate = mockMvcFacade.post([
+                url : root,
+                body: [props: [a: 'a']]
+        ])
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput createdProcessConfig = ResponseMapper.parseResponse(responseOfCreate, ProcessConfigApiOutput)
+
+        and: 'verify that it was successfully added'
+        mockMvcFacade.get([url: "$root/$createdProcessConfig.id"])
+                .andExpect(status().isOk())
+        when:
+        def responseOfPatch = mockMvcFacade.patch([
+                url : "$root/$createdProcessConfig.id",
+                body: [props: [:]]
+        ])
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput patchedProcessConfig = ResponseMapper.parseResponse(responseOfPatch, ProcessConfigApiOutput)
+
+        then: 'verify message of patch'
+        patchedProcessConfig.properties == [:]
+
+        and: 'verify that it was successfully patched'
+        def responseOfGetAfterPatch = mockMvcFacade.get([url: "$root/$createdProcessConfig.id"])
+                .andExpect(status().isOk())
+                .andReturn()
+        ProcessConfigApiOutput afterPatchProcessConfig = ResponseMapper.parseResponse(responseOfGetAfterPatch, ProcessConfigApiOutput)
+        afterPatchProcessConfig.properties == [:]
     }
 
     def 'if resource that you want to delete cannot be found - 404'() {

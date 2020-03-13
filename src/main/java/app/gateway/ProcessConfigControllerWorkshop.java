@@ -2,7 +2,7 @@ package app.gateway;
 
 import app.domain.ProcessConfigServiceWorkshop;
 import app.gateway.input.ProcessConfigCreationApiInput;
-import app.gateway.input.ProcessConfigPartialUpdateApiInput;
+import app.gateway.input.ProcessConfigUpdateApiInput;
 import app.gateway.input.ProcessConfigReplaceApiInput;
 import app.gateway.output.ProcessConfigApiOutput;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class ProcessConfigControllerWorkshop {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> partialUpdate(@RequestBody ProcessConfigPartialUpdateApiInput partialUpdateInput, @PathVariable String id) {
+    public ResponseEntity<ProcessConfigApiOutput> partialUpdate(@RequestBody ProcessConfigUpdateApiInput partialUpdateInput, @PathVariable String id) {
         return null;
     }
 

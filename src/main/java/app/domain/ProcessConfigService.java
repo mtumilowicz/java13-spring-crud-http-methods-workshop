@@ -18,13 +18,13 @@ public class ProcessConfigService {
     @Transactional
     public Optional<ProcessConfig> replace(ProcessConfigReplaceInput configUpdateInput) {
         return findById(configUpdateInput.getId())
-                .map(updateWith(configUpdateInput))
+                .map(drop -> recreateFrom(configUpdateInput))
                 .map(this::save);
     }
 
-    public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput) {
+    public Optional<ProcessConfig> update(ProcessConfigUpdateInput partialUpdateInput) {
         return processConfigRepository.findById(partialUpdateInput.getId())
-                .map(config -> config.putAll(partialUpdateInput.getProps()))
+                .map(updateFrom(partialUpdateInput))
                 .map(processConfigRepository::save);
     }
 
@@ -40,7 +40,14 @@ public class ProcessConfigService {
         return processConfigRepository.existsById(id);
     }
 
-    private UnaryOperator<ProcessConfig> updateWith(ProcessConfigReplaceInput updateInput) {
+    private ProcessConfig recreateFrom(ProcessConfigReplaceInput updateInput) {
+        return ProcessConfig.builder()
+                .id(updateInput.getId())
+                .properties(updateInput.getProps())
+                .build();
+    }
+
+    private UnaryOperator<ProcessConfig> updateFrom(ProcessConfigUpdateInput updateInput) {
         return config -> config.withProperties(updateInput.getProps());
     }
 

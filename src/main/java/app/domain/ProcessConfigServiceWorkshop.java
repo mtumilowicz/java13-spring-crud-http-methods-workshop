@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
 @RequiredArgsConstructor
 public class ProcessConfigServiceWorkshop {
@@ -20,7 +19,7 @@ public class ProcessConfigServiceWorkshop {
         return null;
     }
 
-    public Optional<ProcessConfig> partialUpdate(ProcessConfigPartialUpdateInput partialUpdateInput) {
+    public Optional<ProcessConfig> partialUpdate(ProcessConfigUpdateInput partialUpdateInput) {
         return null;
     }
 
