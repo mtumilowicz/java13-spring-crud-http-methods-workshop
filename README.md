@@ -160,6 +160,18 @@
     server or an intervening intermediary
 * TRACE
     * requests a remote, application-level loop-back of the request message
+    * OWASP says you should disable HTTP TRACE because it can be used for Cross Site Tracing
+        * Modern browsers now prevent TRACE requests being made via JavaScript
+    * vulnerability example
+        * TRACE verb is handled by the webserver
+        * your request may pass through something else on the way to the webserver
+            * for example: Web Application Firewall (WAF)
+                * filters requests to detect and kill attacks before they get to the webserver
+        * if that something else adds headers, then your TRACE response will include those headers 
+            * you’ll gain a little information you didn’t already have
+        * you can try to tell the WAF that your request is actually the WAF’s request, and should be ignored
+            * The X-Forwarded-For header is one of the headers added by some WAFs, and it is sometimes used by 
+            the WAF itself to decide if it should filter that request or not
 
 ### http methods characteristics
 |HTTP method   |Safe   |Idempotent   |Cacheable   |
@@ -245,7 +257,7 @@ only the number of bytes are counted and the "Content-Length" header set
     * `@ElementCollection` - mainly for mapping non-entities (basic type or embeddable class)
         * they can't have their own lifecycle
         * `@OneToMany` - is only for mapping entities
-    * apart from `@ElementCollection` annotations could be omitted, but default are not always handy
+    * apart from `@ElementCollection` annotations could be omitted, but defaults are not always handy
     * `@CollectionTable` - specifies the table that is used for the mapping of collections of basic or embeddable types
     * `@MapKeyColumn` - mapping for the key column
     * `@Column` - mapping for the value column
