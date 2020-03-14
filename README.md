@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.com/mtumilowicz/java13-spring-crud-http-methods-workshop.svg?branch=master)](https://travis-ci.com/mtumilowicz/java13-spring-crud-http-methods-workshop)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+# java13-spring-CRUD-http-methods-workshop
 * references:
     * http://restcookbook.com/HTTP%20Methods/idempotency/
     * https://developer.mozilla.org/en-US/docs/Glossary/safe
