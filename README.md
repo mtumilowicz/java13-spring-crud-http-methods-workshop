@@ -8,7 +8,8 @@
     * https://nordicapis.com/understanding-idempotency-and-safety-in-api-design/
     * https://tools.ietf.org/html/rfc5789 (patch)
     * https://httpstatusdogs.com
-
+    * https://stackoverflow.com/questions/2327971/how-do-you-map-a-map-in-hibernate-using-annotations
+    
 ## preface
 * goals of this workshop:
     * overview of all http methods
@@ -63,8 +64,11 @@
         * is intended to support a common data entry use case where the user enters data, causes the entered data 
         to be submitted in a request, and then the data entry mechanism is reset for the next entry so that the 
         user can easily initiate another input action
-    * 206 - Partial Content  
-* 3xx (Redirection): Further action needs to be taken in order to complete the request
+    * 206 - Partial Content
+        * indicates that the server is successfully fulfilling a range request for the target resource by
+        transferring one or more parts of the selected representation that correspond to the satisfiable 
+        ranges found in the request's Range header field 
+* 3xx (Redirection): further action needs to be taken in order to complete the request
     * 300 - Multiple Choices              
     * 301 - Moved Permanently             
     * 302 - Found                         
@@ -208,10 +212,40 @@
         * however POST could be also defined as cacheable
 
 ### spring context
-* @RequestMapping methods mapped to "GET" are also implicitly mapped to "HEAD", i.e. there is no need to have "HEAD" 
+* `@GetMapping`
+* `@RequestMapping(method = RequestMethod.X)`
+* `@RequestMapping` methods mapped to "GET" are also implicitly mapped to "HEAD", i.e. there is no need to have "HEAD" 
 explicitly declared
 * HTTP HEAD request is processed as if it were an HTTP GET except instead of writing the body 
 only the number of bytes are counted and the "Content-Length" header set
 
 ## mapping a map in hibernate
-* https://stackoverflow.com/questions/2327971/how-do-you-map-a-map-in-hibernate-using-annotations
+* suppose we have tables
+    * PROCESS_CONFIG_PROPERTIES (actually a map of properties for each process config)
+    
+        |PROCESS_CONFIG_ID   |VALUE   |KEY   |
+        |---                 |---     |---   |
+        |1                   |value1  |key1  |
+        |1                   |value2  |key2  |
+    * PROCESS_CONFIG
+    
+        |ID                  |
+        |---                 |
+        |1                   |
+* to map it using hibernate to one entity (Process Config)
+    ```
+    @ElementCollection
+    @CollectionTable(name = "process_config_properties",
+            joinColumns = {@JoinColumn(name = "process_config_id", referencedColumnName = "id")})
+    @MapKeyColumn(name = "key")
+    @Column(name = "value")
+    private Map<String, String> properties = new HashMap<>();
+    ```
+* where
+    * `@ElementCollection` - mainly for mapping non-entities (basic type or embeddable class)
+        * they can't have their own lifecycle
+        * `@OneToMany` - is only for mapping entities
+    * apart from `@ElementCollection` annotations could be omitted, but default are not always handy
+    * `@CollectionTable` - specifies the table that is used for the mapping of collections of basic or embeddable types
+    * `@MapKeyColumn` - mapping for the key column
+    * `@Column` - mapping for the value column
