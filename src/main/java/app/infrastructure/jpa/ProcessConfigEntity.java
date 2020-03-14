@@ -17,7 +17,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class ProcessConfigEntity {
+
     @Id
+    @Builder.Default
     private String id = UUID.randomUUID().toString();
 
     @ElementCollection
@@ -25,6 +27,8 @@ public class ProcessConfigEntity {
             joinColumns = {@JoinColumn(name = "process_config_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "key")
     @Column(name = "value")
+    @Builder.Default
+    @Singular
     private Map<String, String> properties = new HashMap<>();
 
     public static ProcessConfigEntity from(ProcessConfig processConfig) {
