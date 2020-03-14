@@ -9,6 +9,9 @@
     * https://tools.ietf.org/html/rfc5789 (patch)
     * https://httpstatusdogs.com
     * https://stackoverflow.com/questions/2327971/how-do-you-map-a-map-in-hibernate-using-annotations
+    * https://airbrake.io/blog/http-errors/303-see-other
+    * https://airbrake.io/blog/http-errors/304-not-modified
+    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304
     
 ## preface
 * goals of this workshop:
@@ -69,13 +72,35 @@
         transferring one or more parts of the selected representation that correspond to the satisfiable 
         ranges found in the request's Range header field 
 * 3xx (Redirection): further action needs to be taken in order to complete the request
-    * 300 - Multiple Choices              
-    * 301 - Moved Permanently             
-    * 302 - Found                         
-    * 303 - See Other                     
-    * 304 - Not Modified                 
-    * 305 - Use Proxy                     
-    * 307 - Temporary Redirect 
+    * if a Location header field is provided, the user agent MAY automatically redirect its request to the URI
+    referenced by the Location field value
+    * 300 - Multiple Choices
+        * 
+    * 301 - Moved Permanently
+        * indicates that the target resource has been assigned a new permanent URI and any future
+        references to this resource ought to use one of the enclosed URIs
+    * 302 - Found
+        * indicates that the target resource resides temporarily under a different URI
+        * for historical reasons, a user agent MAY change the request method from POST to GET for the 
+        subsequent request
+    * 303 - See Other
+        * indicates that the server is redirecting the user agent to a different resource, as indicated by a
+        URI in the Location header field, which is intended to provide an indirect response to the original request
+        * user agent can perform a retrieval request targeting that URI (a GET or HEAD request if using HTTP)
+        * example
+            * POST method request is sent to https://airbrake.io
+            * web server may be configured to redirect this POST request to https://airbrake.io/login
+            * server may respond with a 303 See Other code and include the Location: https://airbrake.io/login 
+            header in the response
+    * 304 - Not Modified
+        * original user agent request occurred using a safe method
+        * request is conditional and uses a If-None-Match or a If-Modified-Since header
+    * 305 - Use Proxy - deprecated
+    * 307 - Temporary Redirect
+        * indicates that the target resource resides temporarily under a different URI and the user agent
+        MUST NOT change the request method if it performs an automatic redirection to that URI
+        * this status code is similar to 302 (Found), except that it does not allow changing the request method 
+        from POST to GET
 * 4xx (Client Error): The request contains bad syntax or cannot be fulfilled
     * 400 - Bad Request                   
     * 401 - Unauthorized                 
