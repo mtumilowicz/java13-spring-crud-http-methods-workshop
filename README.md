@@ -102,32 +102,32 @@
         * this status code is similar to 302 (Found), except that it does not allow changing the request method 
         from POST to GET
 * 4xx (Client Error): The request contains bad syntax or cannot be fulfilled
-    * 400 - Bad Request                   
-    * 401 - Unauthorized                 
-    * 402 - Payment Required              
-    * 403 - Forbidden                     
-    * 404 - Not Found                     
-    * 405 - Method Not Allowed            
-    * 406 - Not Acceptable                
-    * 407 - Proxy Authentication Required 
-    * 408 - Request Timeout               
-    * 409 - Conflict                      
-    * 410 - Gone                          
-    * 411 - Length Required               
-    * 412 - Precondition Failed           
-    * 413 - Payload Too Large             
-    * 414 - URI Too Long                  
-    * 415 - Unsupported Media Type        
-    * 416 - Range Not Satisfiable         
-    * 417 - Expectation Failed            
+    * 400 - Bad Request
+    * 401 - Unauthorized
+    * 402 - Payment Required
+    * 403 - Forbidden  
+    * 404 - Not Found
+    * 405 - Method Not Allowed
+    * 406 - Not Acceptable
+    * 407 - Proxy Authentication Required
+    * 408 - Request Timeout 
+    * 409 - Conflict
+    * 410 - Gone
+    * 411 - Length Required
+    * 412 - Precondition Failed
+    * 413 - Payload Too Large
+    * 414 - URI Too Long
+    * 415 - Unsupported Media Type
+    * 416 - Range Not Satisfiable
+    * 417 - Expectation Failed
     * 426 - Upgrade Required
 * 5xx (Server Error): The server failed to fulfill an apparently valid request
-    * 500 - Internal Server Error         
-    * 501 - Not Implemented               
-    * 502 - Bad Gateway                   
-    * 503 - Service Unavailable           
-    * 504 - Gateway Timeout               
-    * 505 - HTTP Version Not Supported 
+    * 500 - Internal Server Error
+    * 501 - Not Implemented
+    * 502 - Bad Gateway
+    * 503 - Service Unavailable
+    * 504 - Gateway Timeout
+    * 505 - HTTP Version Not Supported
 
 ## http methods
 |HTTP method   |Request has body   |Response has body
