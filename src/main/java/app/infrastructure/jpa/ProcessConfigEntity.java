@@ -2,7 +2,7 @@ package app.infrastructure.jpa;
 
 import app.domain.ProcessConfig;
 import com.google.common.collect.ImmutableMap;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashMap;
@@ -10,7 +10,12 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Data
+@Table(name = "process_config")
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class ProcessConfigEntity {
     @Id
     private String id = UUID.randomUUID().toString();
