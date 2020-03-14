@@ -27,8 +27,6 @@ public class ProcessConfigEntity {
             joinColumns = {@JoinColumn(name = "process_config_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "key")
     @Column(name = "value")
-    @Builder.Default
-    @Singular
     private Map<String, String> properties = new HashMap<>();
 
     public static ProcessConfigEntity from(ProcessConfig processConfig) {
