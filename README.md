@@ -12,6 +12,7 @@
     * https://airbrake.io/blog/http-errors/303-see-other
     * https://airbrake.io/blog/http-errors/304-not-modified
     * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304
+    * https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412
     
 ## preface
 * goals of this workshop:
@@ -75,7 +76,11 @@
     * if a Location header field is provided, the user agent MAY automatically redirect its request to the URI
     referenced by the Location field value
     * 300 - Multiple Choices
-        * 
+        * indicates that the target resource has more than one representation, each with its own more specific 
+        identifier, and information about the alternatives is being provided so that the user (or user agent) 
+        can select a preferred representation by redirecting its request to one or more of those identifiers
+        * web server thinks that the URL provided by the client is  not specific enough, and a further selection 
+        needs to be made from a number of choices
     * 301 - Moved Permanently
         * indicates that the target resource has been assigned a new permanent URI and any future
         references to this resource ought to use one of the enclosed URIs
@@ -93,8 +98,10 @@
             * server may respond with a 303 See Other code and include the Location: https://airbrake.io/login 
             header in the response
     * 304 - Not Modified
-        * original user agent request occurred using a safe method
-        * request is conditional and uses a If-None-Match or a If-Modified-Since header
+        * indicates that a conditional GET or HEAD request has been received and would have resulted in a 200
+        (OK) response if it were not for the fact that the condition evaluated to false
+        * the server is therefore redirecting the client to make use of that stored representation as if it were 
+        the payload of a 200 (OK) response
     * 305 - Use Proxy - deprecated
     * 307 - Temporary Redirect
         * indicates that the target resource resides temporarily under a different URI and the user agent
@@ -103,31 +110,115 @@
         from POST to GET
 * 4xx (Client Error): The request contains bad syntax or cannot be fulfilled
     * 400 - Bad Request
+        * indicates that the server cannot or will not process the request due to something that is perceived to be
+         a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing)
     * 401 - Unauthorized
-    * 402 - Payment Required
-    * 403 - Forbidden  
+        * indicates that the request has not been applied because it lacks valid authentication credentials for 
+        the target resource
+        * server generating a 401 response MUST send a WWW-Authenticate header field containing at least one
+        challenge applicable to the target resource
+    * 402 - Payment Required - reserved for future use
+    * 403 - Forbidden
+        * indicates that the server understood the request but refuses to authorize it
+        * if authentication credentials were provided in the request, the server considers them insufficient to 
+        grant access
     * 404 - Not Found
+        * indicates that the origin server did not find a current representation for the target resource or is not 
+        willing to disclose that one exists
     * 405 - Method Not Allowed
+        * indicates that the method received in the request-line is known by the origin server but not supported 
+        by the target resource
+        * the origin server MUST generate an Allow header field in a 405 response containing a list of the target
+        resource's currently supported methods
     * 406 - Not Acceptable
+        * indicates that the target resource does not have a current representation that would be acceptable 
+        to the user agent, according to the proactive negotiation header fields received in the request, and 
+        the server is unwilling to supply a default representation
     * 407 - Proxy Authentication Required
-    * 408 - Request Timeout 
+        * similar to 401 (Unauthorized), but it indicates that the client needs to authenticate itself in order 
+        to use a proxy
+        * proxy MUST send a Proxy-Authenticate header field containing a challenge applicable to that proxy for 
+        the target resource
+        * The client MAY repeat the request with a new or replaced Proxy-Authorization header field
+    * 408 - Request Timeout
+        * indicates that the server did not receive a complete request message within the time that it was prepared 
+        to wait
     * 409 - Conflict
+        * indicates that the request could not be completed due to a conflict with the current state of the target
+        resource
+        * if versioning were being used and the representation being PUT included changes to a resource that conflict 
+        with those made by an earlier (third-party) request
+            * the response representation would likely contain information useful for merging the differences 
+            based on the revision history
     * 410 - Gone
+        * indicates that access to the target resource is no longer available at the origin server and that this
+        condition is likely to be permanent
+        * if the origin server does not know, or has no facility to determine, whether or not the condition
+        is permanent, the status code 404 (Not Found) ought to be used instead
+        * such an event is common for limited-time, promotional services and for resources belonging to
+        individuals no longer associated with the origin server's site
     * 411 - Length Required
+        * indicates that the server refuses to accept the request without a defined Content-Length
     * 412 - Precondition Failed
+        * indicates that one or more conditions given in the request header fields evaluated to false when
+        tested on the server
+        * happens with conditional requests on methods other than GET or HEAD when the condition defined by the 
+        If-Unmodified-Since or If-None-Match headers is not fulfilled
+        * allows the client to place preconditions on the current resource state (its current representations 
+        and metadata) and, thus, prevent the request method from being applied if the target resource is in an 
+        unexpected state
     * 413 - Payload Too Large
+        * indicates that the server is refusing to process a request because the request payload is larger
+        than the server is willing or able to process
     * 414 - URI Too Long
+        * indicates that the server is refusing to service the request because the request-target is longer than 
+        the server is willing to interpret
+        * examples
+            * when a client has improperly converted a POST request to a GET request with long query information
+            * when the client has descended into a "black hole" of redirection (e.g., a redirected URI prefix that 
+            points to a suffix of itself)
+            * when the server is under attack by a client attempting to exploit potential security holes
     * 415 - Unsupported Media Type
+        * indicates that the origin server is refusing to service the request because the payload is in a format not 
+        supported by this method on the target resource
     * 416 - Range Not Satisfiable
+        * indicates that none of the ranges in the request's Range header field overlap the current extent of the 
+        selected resource or that the set of ranges requested has been rejected due to invalid ranges or an excessive
+        request of small or overlapping ranges
+        * example
+            * for byte ranges, failing to overlap the current extent means that the first-byte-pos of all of the 
+            byte-range-spec values were greater than the current length of the selected representation
     * 417 - Expectation Failed
+        * indicates that the expectation given in the request's Expect header field could not be met by at least 
+        one of the inbound servers
     * 426 - Upgrade Required
+        * indicates that the server refuses to perform the request using the current protocol but might be willing 
+        to do so after the client upgrades to a different protocol
+        * server MUST send an Upgrade header field in a 426 response to indicate the required protocol(s)
 * 5xx (Server Error): The server failed to fulfill an apparently valid request
+    * indicates that the server is aware that it has erred or is incapable of performing the requested method
     * 500 - Internal Server Error
+        * indicates that the server encountered an unexpected condition that prevented it from fulfilling the request
     * 501 - Not Implemented
+        * indicates that the server does not support the functionality required to fulfill the request
+        * this is the appropriate response when the server does not recognize the request method and is not capable 
+        of supporting it for any resource
     * 502 - Bad Gateway
+        * indicates that the server, while acting as a gateway or proxy, received an invalid response from an inbound 
+        server it accessed while attempting to fulfill the request
     * 503 - Service Unavailable
+        * indicates that the server is currently unable to handle the request due to a temporary overload or 
+        scheduled maintenance, which will likely be alleviated after some delay
+        * existence of the 503 status code does not imply that a server has to use it when becoming overloaded
+            * some servers might simply refuse the connection
     * 504 - Gateway Timeout
+        * indicates that the server, while acting as a gateway or proxy, did not receive a timely response from 
+        an upstream server it needed to access in order to complete the request
     * 505 - HTTP Version Not Supported
+        * indicates that the server does not support, or refuses to support, the major version of HTTP that was 
+        used in the request message
+        * server SHOULD generate a representation for the 505 response that describes why that version is not 
+        supported and what other protocols are supported by that server
 
 ## http methods
 |HTTP method   |Request has body   |Response has body
