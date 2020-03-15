@@ -29,7 +29,8 @@
         * http://localhost:8080/h2-console
     * introduction to swagger
         * https://github.com/mtumilowicz/swagger-gradle-config
-* workshop: workshop package, answers: answers package
+* workshop: `ProcessConfigControllerWorkshop`, `ProcessConfigServiceWorkshop`
+* answers: `ProcessConfigController`, `ProcessConfigService`
 
 ## http response status codes
 * the first digit of the status-code defines the class of response
