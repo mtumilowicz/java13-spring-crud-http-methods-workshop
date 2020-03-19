@@ -14,22 +14,22 @@ public class ProcessConfigServiceWorkshop {
         return null;
     }
 
-    public Optional<ProcessConfig> replace(ProcessConfigReplaceInput replaceInput) {
+    public Optional<ProcessConfig> replace(ReplaceProcessConfigCommand command) {
         // findById
-        // recreate
+        // create
         // save
         return null;
     }
 
-    public Optional<ProcessConfig> update(ProcessConfigUpdateInput updateInput) {
+    public Optional<ProcessConfig> update(UpdateProcessConfigCommand command) {
         // findById
         // update existing entity
         // save
         return null;
     }
 
-    public ProcessConfig create(ProcessConfigCreationInput creationInput) {
-        // create from
+    public ProcessConfig create(NewProcessConfigCommand command) {
+        // create
         // save
         return null;
     }

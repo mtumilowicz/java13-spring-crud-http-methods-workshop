@@ -1,6 +1,6 @@
 package app.gateway.input;
 
-import app.domain.ProcessConfigUpdateInput;
+import app.domain.UpdateProcessConfigCommand;
 import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +13,12 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProcessConfigUpdateApiInput {
+public class UpdateProcessConfigApiInput {
     String id;
     Map<String, String> props;
 
-    public ProcessConfigUpdateInput toDomain(String id) {
-        return ProcessConfigUpdateInput.builder()
+    public UpdateProcessConfigCommand toDomain(String id) {
+        return UpdateProcessConfigCommand.builder()
                 .id(id)
                 .props(ImmutableMap.copyOf(props))
                 .build();

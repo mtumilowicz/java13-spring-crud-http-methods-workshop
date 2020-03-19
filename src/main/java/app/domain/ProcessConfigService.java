@@ -14,20 +14,20 @@ public class ProcessConfigService {
         return processConfigRepository.findById(id);
     }
 
-    public Optional<ProcessConfig> replace(ProcessConfigReplaceInput replaceInput) {
-        return findById(replaceInput.getId())
-                .map(drop -> recreateFrom(replaceInput))
+    public Optional<ProcessConfig> replace(ReplaceProcessConfigCommand command) {
+        return findById(command.getId())
+                .map(drop -> createFrom(command))
                 .map(this::save);
     }
 
-    public Optional<ProcessConfig> update(ProcessConfigUpdateInput updateInput) {
-        return findById(updateInput.getId())
-                .map(updateFrom(updateInput))
+    public Optional<ProcessConfig> update(UpdateProcessConfigCommand command) {
+        return findById(command.getId())
+                .map(updateFrom(command))
                 .map(this::save);
     }
 
-    public ProcessConfig create(ProcessConfigCreationInput creationInput) {
-        return save(createFrom(creationInput));
+    public ProcessConfig create(NewProcessConfigCommand command) {
+        return save(createFrom(command));
     }
 
     public Optional<String> deleteById(String id) {
@@ -38,20 +38,20 @@ public class ProcessConfigService {
         return processConfigRepository.existsById(id);
     }
 
-    private ProcessConfig recreateFrom(ProcessConfigReplaceInput updateInput) {
+    private UnaryOperator<ProcessConfig> updateFrom(UpdateProcessConfigCommand command) {
+        return config -> config.withProperties(command.getProps());
+    }
+
+    private ProcessConfig createFrom(NewProcessConfigCommand command) {
         return ProcessConfig.builder()
-                .id(updateInput.getId())
-                .properties(updateInput.getProps())
+                .properties(command.getProps())
                 .build();
     }
 
-    private UnaryOperator<ProcessConfig> updateFrom(ProcessConfigUpdateInput updateInput) {
-        return config -> config.withProperties(updateInput.getProps());
-    }
-
-    private ProcessConfig createFrom(ProcessConfigCreationInput creationInput) {
+    private ProcessConfig createFrom(ReplaceProcessConfigCommand command) {
         return ProcessConfig.builder()
-                .properties(creationInput.getProps())
+                .id(command.getId())
+                .properties(command.getProps())
                 .build();
     }
 

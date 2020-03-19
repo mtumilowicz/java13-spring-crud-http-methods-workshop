@@ -1,9 +1,9 @@
 package app.gateway;
 
 import app.domain.ProcessConfigServiceWorkshop;
-import app.gateway.input.ProcessConfigCreationApiInput;
-import app.gateway.input.ProcessConfigReplaceApiInput;
-import app.gateway.input.ProcessConfigUpdateApiInput;
+import app.gateway.input.NewProcessConfigApiInput;
+import app.gateway.input.ReplaceProcessConfigApiInput;
+import app.gateway.input.UpdateProcessConfigApiInput;
 import app.gateway.output.ProcessConfigApiOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +24,19 @@ public class ProcessConfigControllerWorkshop {
     }
 
     @PostMapping
-    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput, UriComponentsBuilder builder) {
+    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody NewProcessConfigApiInput creationInput, UriComponentsBuilder builder) {
         // ResponseEntityBuilder.created, ProcessConfigApiOutput::from, URI: workshop/{id}
         return null;
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> update(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
+    public ResponseEntity<ProcessConfigApiOutput> update(@RequestBody UpdateProcessConfigApiInput updateInput, @PathVariable String id) {
         // ResponseEntityBuilder.okOrNotFound, service, ProcessConfigApiOutput::from
         return null;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ProcessConfigReplaceApiInput replaceInput, @PathVariable String id) {
+    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ReplaceProcessConfigApiInput replaceInput, @PathVariable String id) {
         // ResponseEntityBuilder.okOrNotFound, service, ProcessConfigApiOutput::from
         return null;
     }

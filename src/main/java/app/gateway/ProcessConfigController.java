@@ -1,9 +1,9 @@
 package app.gateway;
 
 import app.domain.ProcessConfigService;
-import app.gateway.input.ProcessConfigCreationApiInput;
-import app.gateway.input.ProcessConfigUpdateApiInput;
-import app.gateway.input.ProcessConfigReplaceApiInput;
+import app.gateway.input.NewProcessConfigApiInput;
+import app.gateway.input.UpdateProcessConfigApiInput;
+import app.gateway.input.ReplaceProcessConfigApiInput;
 import app.gateway.output.ProcessConfigApiOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -26,19 +26,19 @@ public class ProcessConfigController {
     }
 
     @PostMapping
-    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody ProcessConfigCreationApiInput creationInput, UriComponentsBuilder builder) {
+    public ResponseEntity<ProcessConfigApiOutput> create(@RequestBody NewProcessConfigApiInput creationInput, UriComponentsBuilder builder) {
         return ResponseEntityBuilder.created(processConfigService.create(creationInput.toDomain()),
                 ProcessConfigApiOutput::from,
                 processConfig -> builder.path("app/{id}").buildAndExpand(processConfig.getId()).toUri());
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> update(@RequestBody ProcessConfigUpdateApiInput updateInput, @PathVariable String id) {
+    public ResponseEntity<ProcessConfigApiOutput> update(@RequestBody UpdateProcessConfigApiInput updateInput, @PathVariable String id) {
         return ResponseEntityBuilder.okOrNotFound(processConfigService.update(updateInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ProcessConfigReplaceApiInput replaceInput, @PathVariable String id) {
+    public ResponseEntity<ProcessConfigApiOutput> replace(@RequestBody ReplaceProcessConfigApiInput replaceInput, @PathVariable String id) {
         return ResponseEntityBuilder.okOrNotFound(processConfigService.replace(replaceInput.toDomain(id)), ProcessConfigApiOutput::from);
     }
 

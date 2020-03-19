@@ -6,9 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
-@Getter
 @Builder
+@Getter
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class ProcessConfigCreationInput {
+public class UpdateProcessConfigCommand {
+    String id;
     ImmutableMap<String, String> props;
 }
