@@ -3,7 +3,6 @@ package app.domain;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
-import java.util.function.UnaryOperator;
 
 @RequiredArgsConstructor
 public class ProcessConfigService {
@@ -16,18 +15,18 @@ public class ProcessConfigService {
 
     public Optional<ProcessConfig> replace(ReplaceProcessConfigCommand command) {
         return findById(command.getId())
-                .map(drop -> createFrom(command))
+                .map(drop -> ProcessConfig.createFrom(command))
                 .map(this::save);
     }
 
     public Optional<ProcessConfig> update(UpdateProcessConfigCommand command) {
         return findById(command.getId())
-                .map(updateFrom(command))
+                .map(config -> config.updateFrom(command))
                 .map(this::save);
     }
 
     public ProcessConfig create(NewProcessConfigCommand command) {
-        return save(createFrom(command));
+        return save(ProcessConfig.createFrom(command));
     }
 
     public Optional<String> deleteById(String id) {
@@ -36,23 +35,6 @@ public class ProcessConfigService {
 
     public Optional<String> existsById(String id) {
         return processConfigRepository.existsById(id);
-    }
-
-    private UnaryOperator<ProcessConfig> updateFrom(UpdateProcessConfigCommand command) {
-        return config -> config.withProperties(command.getProps());
-    }
-
-    private ProcessConfig createFrom(NewProcessConfigCommand command) {
-        return ProcessConfig.builder()
-                .properties(command.getProps())
-                .build();
-    }
-
-    private ProcessConfig createFrom(ReplaceProcessConfigCommand command) {
-        return ProcessConfig.builder()
-                .id(command.getId())
-                .properties(command.getProps())
-                .build();
     }
 
     private ProcessConfig save(ProcessConfig processConfig) {
