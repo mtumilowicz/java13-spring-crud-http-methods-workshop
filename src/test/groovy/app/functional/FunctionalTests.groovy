@@ -38,7 +38,6 @@ class FunctionalTests extends Specification {
         expect: 'head previously prepared resource'
         mockMvcFacade.head([url: "$root/$createdProcessConfig.id"])
                 .andExpect(status().isOk())
-                .andReturn()
     }
 
     def 'GET: if resource not exists - 404'() {
@@ -115,7 +114,6 @@ class FunctionalTests extends Specification {
                 body: [props: [a: 'b']]
         ])
                 .andExpect(status().isNotFound())
-                .andReturn()
     }
 
     def 'PATCH: if resource not exists - 404'() {
@@ -198,9 +196,10 @@ class FunctionalTests extends Specification {
         def optionsResponse = mockMvcFacade.options([url: root])
                 .andExpect(status().isOk())
                 .andReturn()
+                .response
 
         and: 'parse allow header'
-        def allowedMethods = optionsResponse.getResponse().getHeader('allow')
+        def allowedMethods = optionsResponse.getHeader('allow')
 
         then: 'all methods should be supported'
         methods.every { allowedMethods.contains it }
