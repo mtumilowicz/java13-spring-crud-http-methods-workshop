@@ -27,38 +27,31 @@ class MockMvcFacade {
     }
 
     def get(Map request) {
-        fireWithoutBody(MockMvcRequestBuilders.get(request.url), request)
+        fireWithoutBody(MockMvcRequestBuilders.get(request.url))
     }
 
     def head(Map request) {
-        fireWithoutBody(MockMvcRequestBuilders.head(request.url), request)
+        fireWithoutBody(MockMvcRequestBuilders.head(request.url))
     }
 
     def delete(Map request) {
-        fireWithoutBody(MockMvcRequestBuilders.delete(request.url), request)
+        fireWithoutBody(MockMvcRequestBuilders.delete(request.url))
     }
 
     def options(Map request) {
-        fireWithoutBody(MockMvcRequestBuilders.options(request.url), request)
+        fireWithoutBody(MockMvcRequestBuilders.options(request.url))
     }
 
-    private def fireWithoutBody(MockHttpServletRequestBuilder httpMethod, Map request) {
-        mockMvc.perform(httpMethod.headers(prepareHeaders(request.headers)))
+    private def fireWithoutBody(MockHttpServletRequestBuilder httpMethod) {
+        mockMvc.perform(httpMethod)
     }
 
     private def fireWithBody(MockHttpServletRequestBuilder httpMethod, Map request) {
         mockMvc.perform(
                 httpMethod
-                        .headers(prepareHeaders(request.headers))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(RequestMapper.asJsonString(request.body)
                         )
         )
-    }
-
-    private def prepareHeaders(inputHeaders) {
-        HttpHeaders headers = new HttpHeaders()
-        !inputHeaders.each { headers.add(it.headerName, it.headerValue) }
-        headers
     }
 }
