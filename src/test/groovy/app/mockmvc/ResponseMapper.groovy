@@ -8,11 +8,7 @@ class ResponseMapper {
     static ObjectMapper MAPPER = new ObjectMapper()
 
     static <T> T parseResponse(MvcResult result, Class<T> responseClass) {
-        try {
-            String contentAsString = result.getResponse().getContentAsString()
-            return MAPPER.readValue(contentAsString, responseClass)
-        } catch (IOException e) {
-            throw new RuntimeException(e)
-        }
+        String contentAsString = result.getResponse().getContentAsString()
+        MAPPER.readValue(contentAsString, responseClass)
     }
 }
