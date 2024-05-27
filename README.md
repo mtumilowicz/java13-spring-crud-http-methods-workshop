@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/mtumilowicz/java13-spring-crud-http-methods-workshop.svg?branch=master)](https://travis-ci.com/mtumilowicz/java13-spring-crud-http-methods-workshop)
+[![Build Status](https://app.travis-ci.com/mtumilowicz/java13-spring-crud-http-methods-workshop.svg?branch=master)](https://travis-ci.com/mtumilowicz/java13-spring-crud-http-methods-workshop)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # java13-spring-CRUD-http-methods-workshop
